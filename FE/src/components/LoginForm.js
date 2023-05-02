@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import "../style/LoginForm.css";
 
-function LoginForm({onLoginSuccess}) {
+const LoginForm = ({onLoginSuccess}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = (event) => {
     // 스프링부트의 API와 연결 - 경로 설정 확인하기
     event.preventDefault();
-    axios.post('/api/login', {email, password})
-    .then(response => {
-      onLoginSuccess();
-    })
-    .catch(error => {
-      console.error(error);
-    });
-    // 테스트용 더미 데이터
-    // const dummyEmail = "dummy@dummy.com";
-    // const dummyPassword = "1234";
-    // if (email === dummyEmail && password === dummyPassword) {
+    // axios.post('/api/login', {email, password})
+    // .then(response => {
     //   onLoginSuccess();
-    // } else {
-    //   console.error("Login failed.");
-    // }
+    // })
+    // .catch(error => {
+    //   console.error(error);
+    // });
+    // 테스트용 더미 데이터
+    const dummyEmail = "dummy@dummy.com";
+    const dummyPassword = "1234";
+    if (email === dummyEmail && password === dummyPassword) {
+      onLoginSuccess();
+    } else {
+      console.error("Login failed.");
+    }
   }
 
   return (
