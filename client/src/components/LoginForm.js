@@ -1,19 +1,35 @@
-import React from 'react';
-import { useState } from "react";
+import React, { useState } from 'react';
+import axios from 'axios';
 import "../style/LoginForm.css";
 
-function LoginForm() {
+function LoginForm({onLoginSuccess}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    // TODO: 스프링부트와 연결하여 로그인 처리하기
-  };
+  const handleLogin = (event) => {
+    // 스프링부트의 API와 연결 - 경로 설정 확인하기
+    event.preventDefault();
+    axios.post('/api/login', {email, password})
+    .then(response => {
+      onLoginSuccess();
+    })
+    .catch(error => {
+      console.error(error);
+    });
+    // 테스트용 더미 데이터
+    // const dummyEmail = "dummy@dummy.com";
+    // const dummyPassword = "1234";
+    // if (email === dummyEmail && password === dummyPassword) {
+    //   onLoginSuccess();
+    // } else {
+    //   console.error("Login failed.");
+    // }
+  }
 
   return (
     <div className="login-form-container">
       <h1 className="login-form-title">Log in to your account</h1>
-      <form className="login-form">
+      <form className="login-form" onSubmit={handleLogin}>
         <div className="login-form-field">
           <label htmlFor="email">ID</label>
           <input
@@ -32,7 +48,7 @@ function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button className="login-form-button" onClick={handleLogin}>
+        <button className="login-form-button" type="submit">
           LOG IN
         </button>
       </form>
