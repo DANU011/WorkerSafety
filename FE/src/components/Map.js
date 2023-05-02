@@ -6,7 +6,7 @@ const Map = () => {
 
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = 'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=&submodules=geocoder';
+    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.REACT_APP_NAVER_MAPS_CLIENT_ID}&submodules=geocoder`;
     script.async = true;
     document.head.appendChild(script);
 
