@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LoginForm from "../components/LoginForm";
 import Dashboard from "./Dashboard";
 
-function Home() {
+const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
