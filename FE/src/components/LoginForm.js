@@ -3,27 +3,19 @@ import axios from 'axios';
 import "../style/LoginForm.css";
 
 const LoginForm = ({onLoginSuccess}) => {
-  const [email, setEmail] = useState("");
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = (event) => {
     // 스프링부트의 API와 연결 - 경로 설정 확인하기
     event.preventDefault();
-    // axios.post('/api/login', {email, password})
-    // .then(response => {
-    //   onLoginSuccess();
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
-    // 테스트용 더미 데이터
-    const dummyEmail = "dummy@dummy.com";
-    const dummyPassword = "1234";
-    if (email === dummyEmail && password === dummyPassword) {
+    axios.post('http://localhost:8080/login', {id, password})
+    .then(response => {
       onLoginSuccess();
-    } else {
-      console.error("Login failed.");
-    }
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
   return (
@@ -31,12 +23,12 @@ const LoginForm = ({onLoginSuccess}) => {
       <h1 className="login-form-title">Log in to your account</h1>
       <form className="login-form" onSubmit={handleLogin}>
         <div className="login-form-field">
-          <label htmlFor="email">ID</label>
+          <label htmlFor="id">ID</label>
           <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            id="id"
+            value={id}
+            onChange={(e) => setId(e.target.value)}
           />
         </div>
         <div className="login-form-field">
