@@ -1,5 +1,8 @@
 Data
--
+- Python 3.10.10
+ - xgboost 1.7.5
+ - sklearn 1.2.2
+- PyCharm 2023.1.1
 
 F-E
 - React : 18.2.0

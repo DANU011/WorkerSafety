@@ -1,0 +1,82 @@
+파이썬에서 개발한 모델을 플라스크(Flask)를 통해 웹 어플리케이션으로 만들고, 
+이를 REST API로 노출시킨 후 스프링부트(Spring Boot)에서 이 API를 호출하여 연동.
+
+1. 파이썬에서 모델 개발 및 Flask 웹 어플리케이션 구축
+2. 모델을 pickle 파일 형태로 저장
+3. Flask를 사용하여 REST API 구현
+4. Flask 어플리케이션을 실행하고, API 요청에 대한 응답을 확인
+
+스프링부트에서 Flask 어플리케이션에 API 요청을 보내기 위해, HTTP 클라이언트 라이브러리(예: Apache HttpComponents)를 사용하여 요청을 보내고, 응답을 받아 처리.
+
+Flask로 간단한 모델을 노출시키고, 스프링부트에서 이를 호출하여 예측값을 받아오는 과정.
+
+===============================================================================================
+===============================================================================================
+
+Flask 코드:
+from flask import Flask, request, jsonify
+import pickle
+
+app = Flask(__name__)
+
+# 모델 로드
+model = pickle.load(open("model.pkl", "rb"))
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    # 요청 받은 데이터
+    data = request.get_json()
+
+    # 모델에 입력 데이터 넣기
+    prediction = model.predict(data)
+
+    # 결과 반환
+    return jsonify({'prediction': prediction.tolist()})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+===============================================================================================
+
+ -> /predict API는 POST 요청을 받고, 입력 데이터를 받아 모델에 넣어 예측 값을 반환
+
+===============================================================================================
+===============================================================================================
+
+스프링부트 코드:
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.json.JSONObject;
+
+public class FlaskClient {
+
+    public static void main(String[] args) {
+        try {
+            CloseableHttpClient client = HttpClients.createDefault();
+
+            // Flask 서버의 API 엔드포인트 URL
+            HttpPost httpPost = new HttpPost("http://localhost:5000/predict");
+
+            // Flask API 요청에 필요한 데이터
+            JSONObject data = new JSONObject();
+            data.put("feature1", 10);
+            data.put("feature2", 5);
+
+            // Flask API 요청에 JSON 데이터를 전송
+            StringEntity entity = new StringEntity(data.toString(), ContentType.APPLICATION_JSON);
+            httpPost.setEntity(entity);
+
+            // Flask 서버로 요청 보내기
+            CloseableHttpResponse response = client.execute(httpPost);
+
+            // Flask 서버로부터의 응답 받기
+            HttpEntity responseEntity = response.getEntity();
+
+
