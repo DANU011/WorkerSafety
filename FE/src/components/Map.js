@@ -1,22 +1,43 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Map = () => {
+  const [loaded, setLoaded] = useState(false);
+  const mapElement = useRef(null);
+
   useEffect(() => {
-    const { naver } = window;
-    const mapOptions = {
-      center: new naver.maps.LatLng(37.49988, 127.03856),
-      zoom: 17
+    const script = document.createElement('script');
+    script.src = 'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=&submodules=geocoder';
+    script.async = true;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      setLoaded(true);
     };
-    const map = new naver.maps.Map('map', mapOptions);
-    const marker = new naver.maps.Marker({
-      position: new naver.maps.LatLng(37.49988, 127.03856),
-      map: map
-    });
   }, []);
 
-  return (
-    <div id="map" />
-  );
+  useEffect(() => {
+    if (!loaded) return;
+
+    const { naver } = window;
+    if (!mapElement.current || !naver) return;
+
+    const location = new naver.maps.LatLng(37.5656, 126.9769);
+    const mapOptions = {
+      center: location,
+      zoom: 17,
+      zoomControl: true,
+      zoomControlOptions: {
+        position: naver.maps.Position.TOP_RIGHT,
+      },
+    };
+    const map = new naver.maps.Map(mapElement.current, mapOptions);
+    new naver.maps.Marker({
+      position: location,
+      map,
+    });
+  }, [loaded]);
+
+  return <div ref={mapElement} />;
 };
 
 export default Map;
