@@ -7,7 +7,7 @@ const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  function handleLoginSuccess() {
+  const handleLoginSuccess = () => {
     setIsLoggedIn(true);
     navigate('/dashboard');
   }
