@@ -1,0 +1,15 @@
+Data
+- Python 3.10.10
+ - xgboost 1.7.5
+ - sklearn 1.2.2
+- PyCharm 2023.1.1
+
+F-E
+- React : 18.2.0
+ - react-router-dom : 6.11.0
+ - axios : 1.4.0
+- Node : 18.13.0
+- VSCode : 1.77.3
+
+B-E
+-
