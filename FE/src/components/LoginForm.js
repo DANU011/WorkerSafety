@@ -7,16 +7,20 @@ const LoginForm = ({onLoginSuccess}) => {
   const [password, setPassword] = useState("");
 
   const handleLogin = (event) => {
-    // 스프링부트의 API와 연결 - 경로 설정 확인하기
     event.preventDefault();
+    if (!id || !password) {
+      console.log("아이디와 비밀번호를 입력해주세요.");
+      return;
+    }
     axios.post('http://localhost:8080/login', {id, password})
-    .then(response => {
-      onLoginSuccess();
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  }
+      .then(response => {
+        onLoginSuccess();
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+  
 
   return (
     <div className="login-form-container">
