@@ -1,9 +1,18 @@
 # import pickle
-import requests
+#import requests
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+@app.route('/flask/data', methods=['POST'])
+def analyze_data():
+    # 데이터 받아오기
+    data = request.json
+    print(data)
+    # 데이터 분석하기
+    result = {'status': 'success', 'message': 'Data analyzed successfully'}
+    # 결과 반환하기
+    return jsonify(result)
 
 @app.route('/data', methods=['POST'])
 def receive_data():
