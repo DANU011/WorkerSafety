@@ -5,7 +5,9 @@ app = Flask(__name__)
 
 @app.route('/hello')
 def hello_world():
-    return 'Hello, World!'
+    data = {'name': 'John Doe', 'age': 30}
+    response = request.post('http://localhost:8080/login/data', json=data)
+    return response
 
 # # pickle 파일을 불러와서 예측 결과를 반환하는 기능
 # # 피클 파일 불러오기

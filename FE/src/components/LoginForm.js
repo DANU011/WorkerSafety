@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../service/api';
 import "../style/LoginForm.css";
 
 const LoginForm = ({onLoginSuccess}) => {
@@ -12,7 +12,7 @@ const LoginForm = ({onLoginSuccess}) => {
       console.log("아이디와 비밀번호를 입력해주세요.");
       return;
     }
-    axios.post('http://localhost:8080/login', {id, password})
+    api.post('/login', {id, password})
       .then(response => {
         onLoginSuccess();
       })
