@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -73,25 +74,42 @@ public class MemberController {
 //	    return ResponseEntity.ok(data);
 //	}
 	
-	@PostMapping("/send-data")
-	public Mono<String> sendDataToFlask() {
-	WebClient webClient = WebClient.builder()
-	.baseUrl("http://localhost:5000")
-	.build();
-	return webClient.post()
-	        .uri("/data")
-	        .contentType(MediaType.APPLICATION_JSON)
-	        .bodyValue(Collections.singletonMap("key", "value"))
-	        .retrieve()
-	        .bodyToMono(String.class);
-	}
+//	@PostMapping("/send-data")
+//	public Mono<String> sendDataToFlask() {
+//	WebClient webClient = WebClient.builder()
+//	.baseUrl("http://localhost:5000")
+//	.build();
+//	return webClient.post()
+//	        .uri("/data")
+//	        .contentType(MediaType.APPLICATION_JSON)
+//	        .bodyValue(Collections.singletonMap("key", "value"))
+//	        .retrieve()
+//	        .bodyToMono(String.class);
+//	}
+//	
+//	@GetMapping("/result")
+//    public String result(@RequestBody Map<String, String> resultData) {
+//        // 결과 데이터 처리
+//        String result = resultData.get("result");
+//        return "Result: " + result;
+//    }
 	
-	@GetMapping("/result")
-    public String result(@RequestBody Map<String, String> resultData) {
-        // 결과 데이터 처리
-        String result = resultData.get("result");
-        return "Result: " + result;
-    }
+	@PostMapping("/send-data")
+	public ResponseEntity<String> sendDataToFlask() {
+	    WebClient webClient = WebClient.builder()
+	            .baseUrl("http://localhost:5000")
+	            .build();
+	    Mono<String> response = webClient.post()
+	            .uri("/data")
+	            .contentType(MediaType.APPLICATION_JSON)
+	            .bodyValue(Collections.singletonMap("key", "value"))
+	            .retrieve()
+	            .bodyToMono(String.class);
+
+	    String responseBody = response.block(); // Mono를 블로킹해서 결과를 가져옵니다.
+	    HttpStatus status = responseBody != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR; // 결과가 null이 아니면 OK, 아니면 INTERNAL_SERVER_ERROR를 반환합니다.
+	    return ResponseEntity.status(status).body(responseBody);
+	}
 	
 //	import requests
 //
