@@ -67,5 +67,9 @@ public class MemberController {
 		return data;
 	}
 	
-	
+//	import requests
+//
+//	data = {'name': 'John Doe', 'age': 30}
+//	response = requests.post('http://localhost:8080/api/data', json=data)
+//  print(response.text)	
 }
