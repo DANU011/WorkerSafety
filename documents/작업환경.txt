@@ -12,4 +12,6 @@ F-E
 - VSCode : 1.77.3
 
 B-E
--
+- springboot  3.0.6
+- JAVA 17
+ 
