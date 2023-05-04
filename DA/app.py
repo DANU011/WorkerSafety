@@ -1,13 +1,18 @@
 # import pickle
+import requests
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route('/hello')
-def hello_world():
-    data = {'name': 'John Doe', 'age': 30}
-    response = request.post('http://localhost:8080/login/data', json=data)
-    return response
+
+@app.route('/data', methods=['GET'])
+def data():
+    data = request.get_json()
+    # 데이터 처리
+    result = "Processed Data"
+    # 결과 데이터 스프링부트로 전송
+    return jsonify(result=result)
+
 
 # # pickle 파일을 불러와서 예측 결과를 반환하는 기능
 # # 피클 파일 불러오기
