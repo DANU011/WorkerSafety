@@ -1,17 +1,26 @@
 # import pickle
-import requests
+#import requests
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+@app.route('/flask/data', methods=['POST'])
+def analyze_data():
+    # 데이터 받아오기
+    data = request.json
+    print(data)
+    # 데이터 분석하기
+    result = {'status': 'success', 'message': 'Data analyzed successfully'}
+    # 결과 반환하기
+    return jsonify(result)
 
-@app.route('/data', methods=['GET'])
-def data():
+@app.route('/data', methods=['POST'])
+def receive_data():
     data = request.get_json()
-    # 데이터 처리
-    result = "Processed Data"
-    # 결과 데이터 스프링부트로 전송
-    return jsonify(result=result)
+    print(data)
+    # 받은 데이터 처리
+    result = data.get('key', 'default_value')
+    return jsonify({'result': result})
 
 
 # # pickle 파일을 불러와서 예측 결과를 반환하는 기능
