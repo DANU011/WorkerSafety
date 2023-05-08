@@ -21,7 +21,6 @@ const LoginForm = ({onLoginSuccess}) => {
       });
   };
   
-
   return (
     <div className="login-form-container">
       <h1 className="login-form-title">Log in to your account</h1>
