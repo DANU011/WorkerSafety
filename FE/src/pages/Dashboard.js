@@ -21,12 +21,15 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className='container'>
-      <div className='map-container'>
-        <Map />
-      </div>
-      <div className='table-container'>
-        <Table data={data} />
+    <div className='dashboard'>
+      <h1 className='dashboard-title'>KEEP ME</h1>
+      <div className='container'>
+        <div className='map-container'>
+          <Map />
+        </div>
+        <div className='table-container'>
+          <Table data={data} />
+        </div>
       </div>
     </div>
   );
