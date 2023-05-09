@@ -4,10 +4,10 @@
 > 단순 예제이기 때문에 참고용으로 적합하며 실무에 사용하게 될 경우 책임은 사용자에게 있으니 주의하세요.
 
 ## 설정
-pip install flask 
-pip install numpy
-pip install pandas 
-pip install joblib
+pip install flask <br>
+pip install numpy <br>
+pip install pandas <br>
+pip install joblib <br>
 pip install scikit-learn
 
 ## 실행
