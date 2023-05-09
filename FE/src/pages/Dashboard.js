@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import Table from '../components/Table';
 import Map from '../components/Map';
+import Table from '../components/Table';
 import api from '../service/api';
 import '../style/Dashboard.css';
 
@@ -13,9 +13,9 @@ const Dashboard = () => {
     //   .catch((error) => console.error(error));
     // 테스트용 데이터
     const dummyData = [
-    { id: 1, name: 'John Doe', age: 25, city: 'New York' },
-    { id: 2, name: 'Jane Doe', age: 30, city: 'Los Angeles' },
-    { id: 3, name: 'Bob Smith', age: 35, city: 'Chicago' },
+      { id: 1, name: '구민지', age: 32, city: 'Busan' },
+      { id: 2, name: '김단우', age: 30, city: 'Busan' },
+      { id: 3, name: '양철민', age: 25, city: 'Ulsan' },
     ];
     setData(dummyData);
   }, []);
@@ -25,7 +25,7 @@ const Dashboard = () => {
       <h1 className='dashboard-title'>KEEP ME</h1>
       <div className='container'>
         <div className='map-container'>
-          <Map />
+          <Map onMarkerSelected={() => {}} />
         </div>
         <div className='table-container'>
           <Table data={data} />

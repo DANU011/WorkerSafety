@@ -1,37 +1,82 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import InfoData1 from '../components/InfoData1';
+import InfoData2 from '../components/InfoData2';
+import InfoData3 from '../components/InfoData3';
 
-const Map = () => {
+const Map = ({ onMarkerSelected }) => {
+  const [map, setMap] = useState(null);
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
+  const [markers, setMarkers] = useState([]);
+  const [isInfoDataVisible, setIsInfoDataVisible] = useState(false);
+  const [selectedComponent, setSelectedComponent] = useState(null);
+
   const mapRef = useRef(null);
 
   useEffect(() => {
+    const locations = [
+      { lat: 35.235891, lng: 129.076942, component: <InfoData1 /> },
+      { lat: 35.235403, lng: 129.076276, component: <InfoData2 /> },
+      { lat: 35.235874, lng: 129.077993, component: <InfoData3 /> },
+    ];
+    const intervalDuration = 700;
     const script = document.createElement('script');
     script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.REACT_APP_NAVER_MAPS_CLIENT_ID}&submodules=geocoder`;
     script.async = true;
     script.onload = () => {
       const { naver } = window;
-      const location = new naver.maps.LatLng(35.235891, 129.076942);
       const mapOptions = {
-        center: location,
+        center: new naver.maps.LatLng(locations[0].lat, locations[0].lng),
         zoom: 17,
         zoomControl: true,
         zoomControlOptions: {
           position: naver.maps.Position.TOP_RIGHT,
         },
       };
-      const map = new naver.maps.Map(mapRef.current, mapOptions);
-      new naver.maps.Marker({
-        position: location,
-        map,
+      const mapInstance = new naver.maps.Map(mapRef.current, mapOptions);
+      setMap(mapInstance);
+
+      const markers = locations.map((location, index) => {
+        const marker = new naver.maps.Marker({
+          position: new naver.maps.LatLng(location.lat, location.lng),
+          map: mapInstance,
+        });
+        marker.addListener('click', () => {
+          setSelectedMarkerIndex(index);
+          setSelectedComponent(location.component);
+          setIsInfoDataVisible(true);
+        });
+        return marker;
       });
+      setMarkers(markers);
+
+      setInterval(() => {
+        markers.forEach((marker, index) => {
+          const position = marker.getPosition();
+          const newPosition = new naver.maps.LatLng(
+            position.lat() + Math.random() * 0.0002 - 0.0001,
+            position.lng() + Math.random() * 0.0002 - 0.0001
+          );
+          marker.setPosition(newPosition);
+        });
+      }, intervalDuration);
     };
     document.head.appendChild(script);
   }, []);
 
+  const handleCloseInfoData = () => {
+    setIsInfoDataVisible(false);
+  };
+
   return (
-    <div
-      ref={mapRef}
-      style={{ width: '100%', height: '100%' }}
-    />
+    <div style={{ width: '100%', height: '100%' }}>
+      <div ref={mapRef} style={{ width: '100%', height: '100%' }}></div>
+      {isInfoDataVisible && (
+        <div>
+          {selectedComponent}
+          <button onClick={handleCloseInfoData}>Close</button>
+        </div>
+      )}
+    </div>
   );
 };
 
