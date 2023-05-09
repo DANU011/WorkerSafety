@@ -1,4 +1,5 @@
 # import pickle
+<<<<<<< Updated upstream
 #import requests
 from flask import Flask, request, jsonify
 
@@ -22,6 +23,17 @@ def receive_data():
     result = data.get('key', 'default_value')
     return jsonify({'result': result})
 
+=======
+from flask import Flask, requests, jsonify
+
+app = Flask(__name__)
+
+@app.route('/hello', methods=['GET', 'POST'])
+def hello_world():
+    data = {"password": "mypassword"}
+    response = requests.post('http://localhost:8080/login/data', json=data)
+    return response
+>>>>>>> Stashed changes
 
 # # pickle 파일을 불러와서 예측 결과를 반환하는 기능
 # # 피클 파일 불러오기
