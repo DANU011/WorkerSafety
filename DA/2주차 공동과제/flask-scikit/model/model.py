@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score
 import joblib
 
 # 데이터 불러오기
@@ -37,8 +37,18 @@ model.fit(X, Y)
 
 # 모델 평가
 y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-print('Accuracy:', accuracy)
+
+def get_clf_eval(test, pred):
+    confusion = confusion_matrix(test, pred)
+    accuracy = accuracy_score(test, pred)
+    precision = precision_score(test, pred, average='weighted')
+    recall = recall_score(test, pred, average='weighted')
+    f1 = 2 * (precision * recall) / (precision + recall)
+    print('오차 행렬')
+    print(confusion)
+    print('Accuracy:', accuracy, 'precision:', precision, 'recall:', recall, 'f1:', f1)
+
+get_clf_eval(y_test, y_pred)
 
 # 모델과 전처리 객체를 저장
 joblib.dump(model, '../model/model_test.pkl')
