@@ -51,7 +51,7 @@ def get_clf_eval(test, pred):
 get_clf_eval(y_test, y_pred)
 
 # 모델과 전처리 객체를 저장
-joblib.dump(model, '../model/model_test.pkl')
+joblib.dump(model, '../model/model.pkl')
 joblib.dump(scaler, '../model/scaler.pkl')
 joblib.dump(imputer, '../model/imputer.pkl')
 
