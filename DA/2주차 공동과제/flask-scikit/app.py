@@ -2,13 +2,14 @@ import flask
 from flask import Flask, request, render_template
 import joblib
 import pandas as pd
+from preprocessing import preprocess_data
 
 app = Flask(__name__)
 
-# 모델과 전처리 객체 불러오기
+# 모델 불러오기
 model = joblib.load('./model/model.pkl')
-scaler = joblib.load('./model/scaler.pkl')
-imputer = joblib.load('./model/imputer.pkl')
+# scaler = joblib.load('./model/scaler.pkl')
+# imputer = joblib.load('./model/imputer.pkl')
 
 # index 페이지 라우팅
 
@@ -35,9 +36,10 @@ def predict():
     df = pd.read_csv(csv_path)
 
     # 전처리
-    X = df.iloc[:, :-2].values
-    X = imputer.transform(X)
-    X = scaler.transform(X)
+    X = preprocess_data(df)
+    # X = df.iloc[:, :-2].values
+    # X = imputer.transform(X)
+    # X = scaler.transform(X)
 
     # 예측 결과 생성
     y_pred = model.predict(X)
