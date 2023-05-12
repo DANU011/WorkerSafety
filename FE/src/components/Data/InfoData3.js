@@ -1,5 +1,3 @@
-import React from 'react';
-
 const InfoData3 = () => {
   return (
     <div className="infoData">
