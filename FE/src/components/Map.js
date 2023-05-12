@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
-import InfoData1 from '../components/InfoData1';
-import InfoData2 from '../components/InfoData2';
-import InfoData3 from '../components/InfoData3';
+import InfoData1 from '../components/Data/InfoData1';
+import InfoData2 from '../components/Data/InfoData2';
+import InfoData3 from '../components/Data/InfoData3';
 
 const Map = ({ onMarkerSelected }) => {
   const [map, setMap] = useState(null);
