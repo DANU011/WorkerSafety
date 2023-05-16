@@ -7,13 +7,6 @@
   background-color: #FFE4C4;
 }
 
-.dashboard-title {
-  text-align: center;
-  font-size: 3rem;
-  margin: 0;
-  color: #DC143C;
-}
-
 .container {
   display: flex;
   justify-content: center;

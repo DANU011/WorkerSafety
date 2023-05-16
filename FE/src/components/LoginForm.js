@@ -14,7 +14,7 @@ const LoginForm = ({onLoginSuccess}) => {
     }
     api.post('/login', {id, password})
       .then(response => {
-        onLoginSuccess();
+        onLoginSuccess(response.data);
       })
       .catch(error => {
         console.error(error);

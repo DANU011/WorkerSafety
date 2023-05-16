@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import Map from '../components/Map';
 import Table from '../components/Table';
 import TableUI from '../components/TableUI';
+import DashboardHeader from '../components/DashboardHeader';
 import api from '../service/api';
 import '../style/Dashboard.css';
 
-const Dashboard = () => {
+const Dashboard = ({loginInfo}) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Dashboard = () => {
 
   return (
     <div className='dashboard'>
-      <h1 className='dashboard-title'>KEEP ME</h1>
+      <DashboardHeader loginInfo={loginInfo} />
       <div className='container'>
         <div className='map-container'>
           <Map onMarkerSelected={() => {}} />

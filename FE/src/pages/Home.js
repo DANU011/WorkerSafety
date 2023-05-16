@@ -5,17 +5,19 @@ import Dashboard from "./Dashboard";
 
 const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginInfo, setLoginInfo] = useState(null);
   const navigate = useNavigate();
 
-  const handleLoginSuccess = () => {
+  const handleLoginSuccess = (logindata) => {
     setIsLoggedIn(true);
+    setLoginInfo(logindata);
     navigate('/dashboard');
   }
 
   return (
     <>
       {!isLoggedIn && <LoginForm onLoginSuccess={handleLoginSuccess} />}
-      {isLoggedIn && <Dashboard />}
+      {isLoggedIn && <Dashboard loginInfo={loginInfo} />}
     </>
   );
 }
