@@ -2,8 +2,9 @@ import { useRef, useEffect, useState } from 'react';
 import InfoData1 from '../components/Data/InfoData1';
 import InfoData2 from '../components/Data/InfoData2';
 import InfoData3 from '../components/Data/InfoData3';
+import '../style/Map.css';
 
-const Map = ({ onMarkerSelected }) => {
+const Map = () => {
   const [map, setMap] = useState(null);
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
   const [markers, setMarkers] = useState([]);
@@ -39,12 +40,18 @@ const Map = ({ onMarkerSelected }) => {
         const marker = new naver.maps.Marker({
           position: new naver.maps.LatLng(location.lat, location.lng),
           map: mapInstance,
+          icon: {
+            content: `<div class='marker'><div class='marker-number'>${index + 1}</div></div>`,
+            size: new naver.maps.Size(30, 40),
+            anchor: new naver.maps.Point(15, 40),
+          },
         });
         marker.addListener('click', () => {
           setSelectedMarkerIndex(index);
           setSelectedComponent(location.component);
           setIsInfoDataVisible(true);
         });
+
         return marker;
       });
       setMarkers(markers);

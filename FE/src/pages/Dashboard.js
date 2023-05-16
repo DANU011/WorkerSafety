@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Map from '../components/Map';
-import Table from '../components/Table';
 import TableUI from '../components/TableUI';
 import DashboardHeader from '../components/DashboardHeader';
 import api from '../service/api';
@@ -27,7 +26,7 @@ const Dashboard = ({loginInfo}) => {
       <DashboardHeader loginInfo={loginInfo} />
       <div className='container'>
         <div className='map-container'>
-          <Map onMarkerSelected={() => {}} />
+          <Map />
         </div>
         <div className='table-container'>
           <TableUI />
