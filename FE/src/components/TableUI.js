@@ -31,18 +31,18 @@ const createData = (name, calories, fat) => {
 }
 
 const rows = [
-  createData(1, 305, 3.7),
-  createData(2, 452, 25.0),
-  createData(3, 262, 16.0),
-  createData(4, 159, 6.0),
-  createData(5, 356, 16.0),
-  createData(6, 408, 3.2),
-  createData(7, 237, 9.0),
-  createData(8, 375, 0.0),
-  createData(9, 518, 26.0),
-  createData(10, 392, 0.2),
-  createData(11, 318, 0),
-  createData(12, 360, 19.0),
+  createData(2, 305, 3.7),
+  createData(4, 452, 25.0),
+  createData(6, 262, 16.0),
+  createData(8, 159, 6.0),
+  createData(10, 356, 16.0),
+  createData(12, 408, 3.2),
+  createData(1, 237, 9.0),
+  createData(3, 375, 0.0),
+  createData(5, 518, 26.0),
+  createData(7, 392, 0.2),
+  createData(9, 318, 0),
+  createData(11, 360, 19.0),
   createData(13, 437, 18.0),
 ];
 

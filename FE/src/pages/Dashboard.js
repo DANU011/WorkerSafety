@@ -30,9 +30,11 @@ const Dashboard = ({loginInfo}) => {
     <div className='dashboard'>
       <DashboardHeader loginInfo={loginInfo} />
       <div className='container'>
-        <div className='map-container'>
-          <Map value={tableData} />
-        </div>
+        {tableData && (
+          <div className='map-container'>
+            <Map value={tableData} />
+          </div>
+        )}
         <div className='table-container'>
           <TableUI onValueChange={handleTableData} />
         </div>
