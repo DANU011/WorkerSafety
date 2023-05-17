@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -206,13 +206,14 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const TableUI = () => {
+const TableUI = ({onValueChange}) => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('calories');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [value, setValue] = useState('');
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -275,6 +276,18 @@ const TableUI = () => {
       ),
     [order, orderBy, page, rowsPerPage],
   );
+
+  const tableData = () => {
+    const data = visibleRows.map((row) => {
+      return row.name;
+    })
+    setValue(data);
+    onValueChange(data);
+  }
+
+  useEffect(() =>{
+    tableData();
+  }, []);
 
   return (
     <Box sx={{ width: '100%' }}>

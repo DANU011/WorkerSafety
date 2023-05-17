@@ -7,6 +7,7 @@ import '../style/Dashboard.css';
 
 const Dashboard = ({loginInfo}) => {
   const [data, setData] = useState([]);
+  const [tableData, setTableData] = useState(null);
 
   useEffect(() => {
     // api.get('/api/data')
@@ -21,15 +22,19 @@ const Dashboard = ({loginInfo}) => {
     setData(dummyData);
   }, []);
 
+  const handleTableData = (value) => {
+    setTableData(value);
+  }
+
   return (
     <div className='dashboard'>
       <DashboardHeader loginInfo={loginInfo} />
       <div className='container'>
         <div className='map-container'>
-          <Map />
+          <Map value={tableData} />
         </div>
         <div className='table-container'>
-          <TableUI />
+          <TableUI onValueChange={handleTableData} />
         </div>
       </div>
     </div>

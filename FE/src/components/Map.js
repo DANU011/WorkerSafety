@@ -4,7 +4,7 @@ import InfoData2 from '../components/Data/InfoData2';
 import InfoData3 from '../components/Data/InfoData3';
 import '../style/Map.css';
 
-const Map = () => {
+const Map = ({value}) => {
   const [map, setMap] = useState(null);
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
   const [markers, setMarkers] = useState([]);
@@ -41,7 +41,7 @@ const Map = () => {
           position: new naver.maps.LatLng(location.lat, location.lng),
           map: mapInstance,
           icon: {
-            content: `<div class='marker'><div class='marker-number'>${index + 1}</div></div>`,
+            content: `<div class='marker'><div class='marker-number'>${value[index]}</div></div>`,
             size: new naver.maps.Size(30, 40),
             anchor: new naver.maps.Point(15, 40),
           },
