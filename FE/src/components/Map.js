@@ -11,8 +11,6 @@ const Map = ({value}) => {
   const [isInfoDataVisible, setIsInfoDataVisible] = useState(false);
   const [selectedComponent, setSelectedComponent] = useState(null);
 
-  console.log(value);
-
   const mapRef = useRef(null);
 
   useEffect(() => {
