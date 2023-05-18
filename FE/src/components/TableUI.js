@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -21,6 +21,9 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import TextField from '@mui/material/TextField';
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
 
 const createData = (name, calories, fat) => {
   return {
@@ -29,22 +32,6 @@ const createData = (name, calories, fat) => {
     fat,
   };
 }
-
-const rows = [
-  createData(1, 305, 3.7),
-  createData(2, 452, 25.0),
-  createData(3, 262, 16.0),
-  createData(4, 159, 6.0),
-  createData(5, 356, 16.0),
-  createData(6, 408, 3.2),
-  createData(7, 237, 9.0),
-  createData(8, 375, 0.0),
-  createData(9, 518, 26.0),
-  createData(10, 392, 0.2),
-  createData(11, 318, 0),
-  createData(12, 360, 19.0),
-  createData(13, 437, 18.0),
-];
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -152,7 +139,7 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected } = props;
+  const { numSelected, handleDelete } = props;
 
   return (
     <Toolbar
@@ -187,7 +174,7 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -208,12 +195,30 @@ EnhancedTableToolbar.propTypes = {
 
 const TableUI = ({onValueChange}) => {
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('calories');
+  const [orderBy, setOrderBy] = useState('name');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [value, setValue] = useState('');
+
+  const [rows, setRows] = useState([
+    createData(2, 305, 3.7),
+    createData(4, 452, 25.0),
+    createData(6, 262, 16.0),
+    createData(8, 159, 6.0),
+    createData(10, 356, 16.0),
+    createData(12, 408, 3.2),
+    createData(1, 237, 9.0),
+    createData(3, 375, 0.0),
+    createData(5, 518, 26.0),
+    createData(7, 392, 0.2),
+    createData(9, 318, 0),
+    createData(11, 360, 19.0),
+    createData(13, 437, 18.0),
+  ]);
+
+  const [filteredRows, setFilteredRows] = useState(rows);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -263,18 +268,40 @@ const TableUI = ({onValueChange}) => {
     setDense(event.target.checked);
   };
 
+  const handleDelete = () => {
+    const updatedRows = rows.filter((row) => !selected.includes(row.name));
+    setRows(updatedRows);
+    setSelected([]);
+  };
+
+  const handleInputChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  const handleInsert = () => {
+    if (!value) {
+      return;
+    }
+
+    const newRow = createData(value);
+    const updatedRows = [...rows, newRow];
+    setRows(updatedRows);
+    setValue('');
+    setSelected([]);
+  };
+
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
+  
   const visibleRows = useMemo(
     () =>
       stableSort(rows, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rows, rowsPerPage],
   );
 
   const tableData = () => {
@@ -287,12 +314,12 @@ const TableUI = ({onValueChange}) => {
 
   useEffect(() =>{
     tableData();
-  }, []);
+  }, [visibleRows]);
 
   return (
     <Box sx={{ width: '100%' }}>
         <Paper sx={{ width: '100%', mb: 2 }}>
-            <EnhancedTableToolbar numSelected={selected.length} />
+            <EnhancedTableToolbar numSelected={selected.length} handleDelete={handleDelete} />
             <TableContainer component={Box} sx={{backgroundColor : '#FDF5E6'}}>
             <Table
                 sx={{ minWidth: 550 }}
@@ -372,6 +399,17 @@ const TableUI = ({onValueChange}) => {
             control={<Switch checked={dense} onChange={handleChangeDense} />}
             label="Dense padding"
         />
+        <TextField
+          label="Add"
+          placeholder="추가"
+          value={value}
+          onChange={handleInputChange}
+        />
+        <Tooltip title="Add">
+          <IconButton onClick={handleInsert} disabled={!value}>
+            <AddIcon />
+          </IconButton>
+        </Tooltip>
     </Box>
   );
 }
