@@ -699,3 +699,4 @@ $RECYCLE.BIN/
 .env
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,linux,macos,intellij,python,pycharm,java,node,react,eclipse
+*.csv
