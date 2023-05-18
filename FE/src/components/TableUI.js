@@ -406,9 +406,11 @@ const TableUI = ({onValueChange}) => {
           onChange={handleInputChange}
         />
         <Tooltip title="Add">
-          <IconButton onClick={handleInsert} disabled={!value}>
-            <AddIcon />
-          </IconButton>
+          <span>
+            <IconButton onClick={handleInsert} disabled={!value}>
+              <AddIcon />
+            </IconButton>
+          </span>
         </Tooltip>
     </Box>
   );
