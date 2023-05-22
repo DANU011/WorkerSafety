@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import InfoData1 from '../components/Data/InfoData1';
 import InfoData2 from '../components/Data/InfoData2';
 import InfoData3 from '../components/Data/InfoData3';
-import '../style/Map.css';
+import '../style/components/Map.css';
 
 const Map = ({value}) => {
   const [map, setMap] = useState(null);

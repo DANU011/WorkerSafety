@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import api from '../service/api';
-import "../style/LoginForm.css";
+import "../style/components/LoginForm.css";
 
-const LoginForm = ({onLoginSuccess}) => {
+const LoginForm = ({ onLoginSuccess }) => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,7 +12,7 @@ const LoginForm = ({onLoginSuccess}) => {
       console.log("아이디와 비밀번호를 입력해주세요.");
       return;
     }
-    api.post('/login', {id, password})
+    api.post('/login', { id, password })
       .then(response => {
         onLoginSuccess(response.data);
       })
@@ -20,7 +20,7 @@ const LoginForm = ({onLoginSuccess}) => {
         console.error(error);
       });
   };
-  
+
   return (
     <div className="login-form-container">
       <h1 className="login-form-title">Log in to your account</h1>

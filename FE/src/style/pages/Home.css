@@ -1,0 +1,8 @@
+.register-box {
+    height: 20vh;
+    background-color: #FEE5D9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
