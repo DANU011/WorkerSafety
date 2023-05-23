@@ -44,8 +44,9 @@ public class ManagerController {
 	    }
 	    
 	    Manager findMember = managerService.getManager(manager);
-	    
+	    System.out.println("로그인 확인" + findMember);
 	    if (findMember != null && findMember.getPassword().equals(manager.getPassword())) {
+	    	
 	        return ResponseEntity.ok(findMember);
 	    } else {
 	        return ResponseEntity.badRequest().body("아이디나 비밀번호가 일치하지 않습니다.");

@@ -16,7 +16,12 @@ const LoginForm = ({ onLoginSuccess }) => {
       .then(response => {
         const jwtToken = response.data.token;
         sessionStorage.setItem('token', jwtToken);
-        onLoginSuccess(response.data);
+        // 로그인 정보를 객체로 생성
+        const loginInfo = {
+          token: jwtToken,
+          data: response.data // 필요한 다른 정보도 추가할 수 있음
+        };
+        onLoginSuccess(loginInfo);
       })
       .catch(error => {
         console.error(error);

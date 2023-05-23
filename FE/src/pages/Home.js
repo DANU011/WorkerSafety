@@ -22,6 +22,8 @@ const Home = () => {
 
   const handleLoginSuccess = (logindata) => {
     setIsLoggedIn(true);
+    console.log(logindata.token); // 토큰 값 출력
+    console.log(logindata.data); // 다른 정보 출력
     setLoginInfo(logindata);
     navigate('/dashboard');
   }
