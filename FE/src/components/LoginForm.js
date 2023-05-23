@@ -3,18 +3,21 @@ import api from '../service/api';
 import "../style/components/LoginForm.css";
 
 const LoginForm = ({ onLoginSuccess }) => {
-  const [id, setId] = useState("");
+  const [managerid, setManageid] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = (event) => {
     event.preventDefault();
-    if (!id || !password) {
+    if (!managerid || !password) {
       console.log("아이디와 비밀번호를 입력해주세요.");
       return;
     }
-    api.post('/login', { id, password })
+    api.post('/login', { managerid, password })
       .then(response => {
-        onLoginSuccess(response.data);
+        const jwtToken = response.data.token; // jwt 토큰을 받아옴
+        // jwt 토큰을 세션 스토리지에 저장
+        sessionStorage.setItem('token', jwtToken);
+        onLoginSuccess(); // 로그인 성공 처리
       })
       .catch(error => {
         console.error(error);
@@ -26,12 +29,12 @@ const LoginForm = ({ onLoginSuccess }) => {
       <h1 className="login-form-title">Log in to your account</h1>
       <form className="login-form" onSubmit={handleLogin}>
         <div className="login-form-field">
-          <label htmlFor="id">ID</label>
+          <label htmlFor="managerid">ID</label>
           <input
             type="text"
-            id="id"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            id="managerid"
+            value={managerid}
+            onChange={(e) => setManageid(e.target.value)}
           />
         </div>
         <div className="login-form-field">

@@ -219,7 +219,7 @@ const TableUI = ({onValueChange}) => {
     createData(13, 437, 18.0),
   ]);
 
-  const [filteredRows, setFilteredRows] = useState(rows);
+  // const [filteredRows, setFilteredRows] = useState(rows);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';

@@ -11,7 +11,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.cos.jwt.domain.Manager;
 import com.cos.jwt.service.ManagerService;
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class ManagerController {
 	@Autowired
