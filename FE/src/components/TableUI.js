@@ -168,7 +168,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          투입 작업자 목록
         </Typography>
       )}
 
@@ -201,6 +201,7 @@ const TableUI = ({onValueChange}) => {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [value, setValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
   const [rows, setRows] = useState([
     createData(2, 305, 3.7),
@@ -274,16 +275,21 @@ const TableUI = ({onValueChange}) => {
     setSelected([]);
   };
 
-  const handleInputChange = (event) => {
+  const handleInputAddChange = (event) => {
     setValue(event.target.value);
   };
+
+  const handleInputSearchChange = (event) => {
+    setSearchValue(event.target.value);
+  }
 
   const handleInsert = () => {
     if (!value) {
       return;
     }
 
-    const newRow = createData(value);
+    const [name, calories, fat] = value.split(',')
+    const newRow = createData(name, parseInt(calories), parseFloat(fat));
     const updatedRows = [...rows, newRow];
     setRows(updatedRows);
     setValue('');
@@ -297,11 +303,13 @@ const TableUI = ({onValueChange}) => {
   
   const visibleRows = useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      ),
-    [order, orderBy, page, rows, rowsPerPage],
+      stableSort(
+        rows.filter((row) =>
+          String(row.name).includes(searchValue)
+        ),
+        getComparator(order, orderBy)
+      ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [rows, order, orderBy, page, rowsPerPage, searchValue],
   );
 
   const tableData = () => {
@@ -385,7 +393,7 @@ const TableUI = ({onValueChange}) => {
             </Table>
             </TableContainer>
             <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10]}
             component="div"
             count={rows.length}
             rowsPerPage={rowsPerPage}
@@ -403,12 +411,25 @@ const TableUI = ({onValueChange}) => {
           label="Add"
           placeholder="추가"
           value={value}
-          onChange={handleInputChange}
+          onChange={handleInputAddChange}
         />
         <Tooltip title="Add">
           <span>
             <IconButton onClick={handleInsert} disabled={!value}>
               <AddIcon />
+            </IconButton>
+          </span>
+        </Tooltip>
+        <TextField
+          label="Search"
+          placeholder="검색"
+          value={searchValue}
+          onChange={handleInputSearchChange}
+        />
+        <Tooltip title="Search">
+          <span>
+            <IconButton>
+              <SearchIcon />
             </IconButton>
           </span>
         </Tooltip>
