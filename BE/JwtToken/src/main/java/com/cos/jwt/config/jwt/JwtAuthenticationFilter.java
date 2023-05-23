@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,10 +25,15 @@ import lombok.RequiredArgsConstructor;
 //스프링 시큐리티에서 UsernamePasswordAuthenticationFilter 가 있음
 //login 요청해서 username,password 전송하면 (post)
 //UsernamePasswordAuthenticationFilter 동작을 함
-@RequiredArgsConstructor
+
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
-	private final AuthenticationManager authenticationManager;
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+		this.authenticationManager = authenticationManager;
+	}
 	
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
