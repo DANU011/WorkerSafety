@@ -42,7 +42,9 @@ public class SecurityConfig {
 				.httpBasic().disable()// httpBasic을 쓰지 않는다.
 				.apply(new MyCustomDsl()) // 커스텀 필터 등록
 				.and()
-				.authorizeRequests(authroize -> authroize .antMatchers("/user/join").permitAll()//메서드를 사용하여 요청에 대한 권한 설정 /user/join만 접근허용 
+				.authorizeRequests(authroize -> authroize .antMatchers("/user/join").permitAll()
+						.antMatchers("/login").permitAll()
+						//메서드를 사용하여 요청에 대한 권한 설정 /user/join만 접근허용 
 						.anyRequest().authenticated())//나머지 접근제한 
 				.build();
 	}

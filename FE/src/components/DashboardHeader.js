@@ -22,12 +22,18 @@ const DashboardHeader = ({loginInfo}) => {
         setAnchorEl(null);
     };
     const handleLogout = () => {
-        api.get('/logout')
+        const token = sessionStorage.getItem('token');
+        // console.log(token)
+        api.put('/login/logout', null, {
+            headers: {
+            Authorization: `Bearer ${token}`
+            }
+        })
             .then(() => {
-                window.location.href = '/';
+            window.location.href = '/';
             })
             .catch((error) => {
-                console.error(error);
+            console.error(error);
             });
     };
 

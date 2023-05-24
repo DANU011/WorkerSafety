@@ -6,6 +6,7 @@ import LoginForm from "../components/LoginForm";
 import Dashboard from "./Dashboard";
 import Register from './Register';
 import '../style/pages/Home.css';
+import DataDetail from './DataDetail';
 
 const CustomButton = styled(Button)({
   backgroundColor: '#e9531d',
@@ -22,9 +23,8 @@ const Home = () => {
 
   const handleLoginSuccess = (logindata) => {
     setIsLoggedIn(true);
-    console.log(logindata.token); // 토큰 값 출력
-    console.log(logindata.data); // 다른 정보 출력
     setLoginInfo(logindata);
+    // console.log(logindata)
     navigate('/dashboard');
   }
 
@@ -40,6 +40,7 @@ const Home = () => {
       ) : null} />
       <Route path="/dashboard" element={isLoggedIn ? <Dashboard loginInfo={loginInfo} /> : null} />
       <Route path="/register" element={!isLoggedIn ? <Register /> : null} />
+      <Route path="/detail" element={<DataDetail />} />
     </Routes>
   );
 }
