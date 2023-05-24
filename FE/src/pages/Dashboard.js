@@ -1,19 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Map from '../components/Map';
 import TableUI from '../components/TableUI';
 import DashboardHeader from '../components/DashboardHeader';
-import api from '../service/api';
 import '../style/pages/Dashboard.css';
 
 const Dashboard = ({loginInfo}) => {
-  // const [data, setData] = useState([]);
   const [tableData, setTableData] = useState(null);
-
-  // useEffect(() => {
-  //   api.get('/api/data')
-  //     .then((response) => setData(response.data))
-  //     .catch((error) => console.error(error));
-  // }, []);
 
   const handleTableData = (value) => {
     setTableData(value);

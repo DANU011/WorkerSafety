@@ -23,7 +23,6 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import TextField from '@mui/material/TextField';
 import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
 
 const createData = (name, calories, fat) => {
   return {
@@ -219,8 +218,6 @@ const TableUI = ({onValueChange}) => {
     createData(13, 437, 18.0),
   ]);
 
-  // const [filteredRows, setFilteredRows] = useState(rows);
-
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -300,7 +297,7 @@ const TableUI = ({onValueChange}) => {
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-  
+
   const visibleRows = useMemo(
     () =>
       stableSort(
@@ -311,7 +308,7 @@ const TableUI = ({onValueChange}) => {
       ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [rows, order, orderBy, page, rowsPerPage, searchValue],
   );
-
+    
   const tableData = () => {
     const data = visibleRows.map((row) => {
       return row.name;
@@ -426,13 +423,6 @@ const TableUI = ({onValueChange}) => {
           value={searchValue}
           onChange={handleInputSearchChange}
         />
-        <Tooltip title="Search">
-          <span>
-            <IconButton>
-              <SearchIcon />
-            </IconButton>
-          </span>
-        </Tooltip>
     </Box>
   );
 }

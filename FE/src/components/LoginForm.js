@@ -12,12 +12,16 @@ const LoginForm = ({ onLoginSuccess }) => {
       console.log("아이디와 비밀번호를 입력해주세요.");
       return;
     }
-    api.post('/login', { managerid, password })
+    api.post('http://localhost:8080/login', { managerid, password }, { withCredentials: true })
       .then(response => {
-        const jwtToken = response.data.token; // jwt 토큰을 받아옴
-        // jwt 토큰을 세션 스토리지에 저장
+        const jwtToken = response.data.token;
         sessionStorage.setItem('token', jwtToken);
-        onLoginSuccess(); // 로그인 성공 처리
+        // 로그인 정보를 객체로 생성
+        const loginInfo = {
+          token: jwtToken,
+          data: response.data // 필요한 다른 정보도 추가할 수 있음
+        };
+        onLoginSuccess(loginInfo);
       })
       .catch(error => {
         console.error(error);

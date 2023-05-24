@@ -24,7 +24,6 @@ const DashboardHeader = ({loginInfo}) => {
     const handleLogout = () => {
         api.get('/logout')
             .then(() => {
-                // 서버에서 로그아웃 처리가 완료되면, 홈 화면으로 이동합니다.
                 window.location.href = '/';
             })
             .catch((error) => {
