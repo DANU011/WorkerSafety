@@ -20,8 +20,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.cos.jwt.config.auth.PrincipalDetails;
 import com.cos.jwt.domain.Manager;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.RequiredArgsConstructor;
 //스프링 시큐리티에서 UsernamePasswordAuthenticationFilter 가 있음
 //login 요청해서 username,password 전송하면 (post)
 //UsernamePasswordAuthenticationFilter 동작을 함
@@ -58,7 +56,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			//3.authentication 객체가 session영역에 저장을 해야하고 그방법이 return 해주면 됨
 			//리턴의 이유는 권한 관리를 security가 대신 해주기 때문에 편하려고 하는거임
 			//굳이 JWT토큰을 사용하면서 세션을 만들이유가 없음. 근데 단지 권한 처리때문에 session 넣어 준다.
-			
 			return authentication;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -81,10 +78,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.withExpiresAt(new Date(System.currentTimeMillis()+(60000*10)))
 				//비공개 클래임
 				.withClaim("managerid", principalDetails.getmanager().getManagerid())
+				.withClaim("managername", principalDetails.getmanager().getName())
 				//서버만 아는 고유한 값으로 해야함
 				.sign(Algorithm.HMAC512("jwt"));
 		// Authorization가 해더에 담겨서 사용자에 응답
 		response.addHeader("Authorization","Bearer "+ jwtToken);
+	
 	}
 	
 
