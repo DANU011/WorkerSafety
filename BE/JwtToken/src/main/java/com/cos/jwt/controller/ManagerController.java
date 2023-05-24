@@ -67,7 +67,7 @@ public class ManagerController {
 	}
 	
 	
-	@PutMapping("/logout")
+	@PutMapping("/login/logout")
 	public void logout(SessionStatus status) {
 		status.setComplete();
 		

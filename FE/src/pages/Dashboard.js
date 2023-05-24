@@ -11,6 +11,8 @@ const Dashboard = ({loginInfo}) => {
     setTableData(value);
   }
 
+  // console.log(loginInfo)
+
   return (
     <div className='dashboard'>
       <DashboardHeader loginInfo={loginInfo} />

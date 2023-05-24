@@ -83,6 +83,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.sign(Algorithm.HMAC512("jwt"));
 		// Authorization가 해더에 담겨서 사용자에 응답
 		response.addHeader("Authorization","Bearer "+ jwtToken);
+//		System.out.println("jwt토큰" + response.getHeader("Authorization"));
 	
 	}
 	

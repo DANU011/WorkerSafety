@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import jwt_decode from 'jwt-decode';
 import api from '../service/api';
 import "../style/components/LoginForm.css";
 
 const LoginForm = ({ onLoginSuccess }) => {
-  const [managerid, setManageid] = useState("");
+  const [managerid, setManagerid] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = (event) => {
@@ -12,15 +13,21 @@ const LoginForm = ({ onLoginSuccess }) => {
       console.log("아이디와 비밀번호를 입력해주세요.");
       return;
     }
-    api.post('http://localhost:8080/login', { managerid, password }, { withCredentials: true })
+    api.post(`/login`, { managerid, password }, { withCredentials: true })
       .then(response => {
-        const jwtToken = response.data.token;
+        // console.log(response.headers.authorization);
+        const jwtToken = response.headers.authorization.split(" ")[1];
         sessionStorage.setItem('token', jwtToken);
-        // 로그인 정보를 객체로 생성
+        // console.log(sessionStorage.getItem("token"));
+        const decodedToken = jwt_decode(jwtToken);
+        // const managerid = decodedToken.managerid;
+        const managername = decodedToken.managername;
+        // console.log(managerid, managername);
+        
         const loginInfo = {
-          token: jwtToken,
-          data: response.data // 필요한 다른 정보도 추가할 수 있음
+          name: managername,
         };
+
         onLoginSuccess(loginInfo);
       })
       .catch(error => {
@@ -38,7 +45,7 @@ const LoginForm = ({ onLoginSuccess }) => {
             type="text"
             id="managerid"
             value={managerid}
-            onChange={(e) => setManageid(e.target.value)}
+            onChange={(e) => setManagerid(e.target.value)}
           />
         </div>
         <div className="login-form-field">
