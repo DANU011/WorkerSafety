@@ -6,6 +6,7 @@ import LoginForm from "../components/LoginForm";
 import Dashboard from "./Dashboard";
 import Register from './Register';
 import '../style/pages/Home.css';
+import DataDetail from './DataDetail';
 
 const CustomButton = styled(Button)({
   backgroundColor: '#e9531d',
@@ -40,6 +41,7 @@ const Home = () => {
       ) : null} />
       <Route path="/dashboard" element={isLoggedIn ? <Dashboard loginInfo={loginInfo} /> : null} />
       <Route path="/register" element={!isLoggedIn ? <Register /> : null} />
+      <Route path="/detail" element={<DataDetail />} />
     </Routes>
   );
 }

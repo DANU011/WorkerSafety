@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
 import InfoData1 from '../components/Data/InfoData1';
-import InfoData2 from '../components/Data/InfoData2';
 import InfoData3 from '../components/Data/InfoData3';
 import '../style/components/Map.css';
 
@@ -13,10 +12,16 @@ const Map = ({value}) => {
 
   const mapRef = useRef(null);
 
+  const data = [
+    { id: 1, text: 'testdata1' },
+    { id: 2, text: 'testdata2' },
+    { id: 3, text: 'testdata3' },
+  ];
+
   useEffect(() => {
     const locations = [
-      { lat: 35.235891, lng: 129.076942, component: <InfoData1 /> },
-      { lat: 35.235403, lng: 129.076276, component: <InfoData2 /> },
+      { lat: 35.235891, lng: 129.076942, component: <InfoData1 data={data[0]} /> },
+      { lat: 35.235403, lng: 129.076276, component: <InfoData1 data={data[1]} /> },
       { lat: 35.235874, lng: 129.077993, component: <InfoData3 /> },
     ];
     const intervalDuration = 700;
