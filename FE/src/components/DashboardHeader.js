@@ -24,11 +24,13 @@ const DashboardHeader = ({loginInfo}) => {
     const handleLogout = () => {
         const token = sessionStorage.getItem('token');
         // console.log(token)
-        api.put('/login/logout', null, {
+        api.put('/login/logout', null, 
+         {
             headers: {
             Authorization: `Bearer ${token}`
             }
-        })
+         }
+        )
             .then(() => {
             window.location.href = '/';
             })

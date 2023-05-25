@@ -21,7 +21,7 @@ const InfoData1 = ({ data }) => {
   return (
     <div className="infoData">
       <div>
-        <CustomButton onClick={handleButtonClick} variant="contained">상세보기</CustomButton>
+        <CustomButton onClick={handleButtonClick} variant="contained" size='small'>상세보기</CustomButton>
         <LineChart />
       </div>
     </div>

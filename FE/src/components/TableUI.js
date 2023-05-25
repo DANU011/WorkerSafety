@@ -16,13 +16,13 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
+// import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import TextField from '@mui/material/TextField';
-import AddIcon from '@mui/icons-material/Add';
+// import AddIcon from '@mui/icons-material/Add';
 
 const createData = (name, calories, fat) => {
   return {
@@ -63,21 +63,21 @@ const stableSort = (array, comparator) => {
 const headCells = [
   {
     id: 'name',
-    numeric: false,
-    disablePadding: true,
-    label: 'Dessert (100g serving)',
+    numeric: true,
+    disablePadding: false,
+    label: '작업자코드',
   },
   {
     id: 'calories',
     numeric: true,
     disablePadding: false,
-    label: 'Calories',
+    label: '이름',
   },
   {
     id: 'fat',
     numeric: true,
     disablePadding: false,
-    label: 'Fat (g)',
+    label: '상태',
   },
 ];
 
@@ -105,7 +105,7 @@ const EnhancedTableHead = (props) => {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.numeric ? 'center' : 'center'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -158,7 +158,7 @@ const EnhancedTableToolbar = (props) => {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {numSelected} 선택
         </Typography>
       ) : (
         <Typography
@@ -177,13 +177,7 @@ const EnhancedTableToolbar = (props) => {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+      ) : null}
     </Toolbar>
   );
 }
@@ -203,19 +197,14 @@ const TableUI = ({onValueChange}) => {
   const [searchValue, setSearchValue] = useState('');
 
   const [rows, setRows] = useState([
-    createData(2, 305, 3.7),
-    createData(4, 452, 25.0),
-    createData(6, 262, 16.0),
-    createData(8, 159, 6.0),
-    createData(10, 356, 16.0),
-    createData(12, 408, 3.2),
-    createData(1, 237, 9.0),
-    createData(3, 375, 0.0),
-    createData(5, 518, 26.0),
-    createData(7, 392, 0.2),
-    createData(9, 318, 0),
-    createData(11, 360, 19.0),
-    createData(13, 437, 18.0),
+    createData(2, 305, '비정상'),
+    createData(4, 452, '정상'),
+    createData(6, 262, '정상'),
+    createData(1, 237, '정상'),
+    createData(3, 375, '비정상'),
+    createData(5, 518, '정상'),
+    createData(7, 392, '정상'),
+    createData(8, 243, '정상')
   ]);
 
   const handleRequestSort = (event, property) => {
@@ -262,9 +251,9 @@ const TableUI = ({onValueChange}) => {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
+  // const handleChangeDense = (event) => {
+  //   setDense(event.target.checked);
+  // };
 
   const handleDelete = () => {
     const updatedRows = rows.filter((row) => !selected.includes(row.name));
@@ -272,26 +261,26 @@ const TableUI = ({onValueChange}) => {
     setSelected([]);
   };
 
-  const handleInputAddChange = (event) => {
-    setValue(event.target.value);
-  };
+  // const handleInputAddChange = (event) => {
+  //   setValue(event.target.value);
+  // };
 
   const handleInputSearchChange = (event) => {
     setSearchValue(event.target.value);
   }
 
-  const handleInsert = () => {
-    if (!value) {
-      return;
-    }
+  // const handleInsert = () => {
+  //   if (!value) {
+  //     return;
+  //   }
 
-    const [name, calories, fat] = value.split(',')
-    const newRow = createData(name, parseInt(calories), parseFloat(fat));
-    const updatedRows = [...rows, newRow];
-    setRows(updatedRows);
-    setValue('');
-    setSelected([]);
-  };
+  //   const [name, calories, fat] = value.split(',')
+  //   const newRow = createData(name, parseInt(calories), parseFloat(fat));
+  //   const updatedRows = [...rows, newRow];
+  //   setRows(updatedRows);
+  //   setValue('');
+  //   setSelected([]);
+  // };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
@@ -302,7 +291,7 @@ const TableUI = ({onValueChange}) => {
     () =>
       stableSort(
         rows.filter((row) =>
-          String(row.name).includes(searchValue)
+          String(row.fat).includes(searchValue)
         ),
         getComparator(order, orderBy)
       ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
@@ -369,11 +358,13 @@ const TableUI = ({onValueChange}) => {
                         id={labelId}
                         scope="row"
                         padding="none"
+                        align='center'
+                        sx={{ width: '40%' }}
                         >
                         {row.name}
                         </TableCell>
-                        <TableCell align="right">{row.calories}</TableCell>
-                        <TableCell align="right">{row.fat}</TableCell>
+                        <TableCell align="center" sx={{ width: '30%' }}>{row.calories}</TableCell>
+                        <TableCell align="center" sx={{ width: '30%' }}>{row.fat}</TableCell>
                     </TableRow>
                     );
                 })}
@@ -397,31 +388,20 @@ const TableUI = ({onValueChange}) => {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage="페이지당 인원"
             sx={{bgcolor : '#FDF5E6'}}
             />
         </Paper>
-        <FormControlLabel
+        {/* <FormControlLabel
             control={<Switch checked={dense} onChange={handleChangeDense} />}
             label="Dense padding"
-        />
-        <TextField
-          label="Add"
-          placeholder="추가"
-          value={value}
-          onChange={handleInputAddChange}
-        />
-        <Tooltip title="Add">
-          <span>
-            <IconButton onClick={handleInsert} disabled={!value}>
-              <AddIcon />
-            </IconButton>
-          </span>
-        </Tooltip>
+        /> */}
         <TextField
           label="Search"
           placeholder="검색"
           value={searchValue}
           onChange={handleInputSearchChange}
+          color='warning'
         />
     </Box>
   );

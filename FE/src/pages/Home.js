@@ -34,7 +34,7 @@ const Home = () => {
         <>
           <LoginForm onLoginSuccess={handleLoginSuccess} />
           <div className='register-box'>
-            <CustomButton component={Link} to="/register" variant="contained">관리자 권한 부여</CustomButton>
+            <CustomButton component={Link} to="/register" variant="contained">관리자 등록</CustomButton>
           </div>
         </>
       ) : null} />
