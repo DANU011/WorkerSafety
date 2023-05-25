@@ -1,43 +1,357 @@
-from flask import Flask, request, jsonify
-import joblib
-import traceback
-import pandas as pd
+# import time
+# import csv
+# from flask import Flask, request
+# import numpy as np
+# import joblib
+#
+# app = Flask(__name__)
+#
+# # KNN 모델 경로 지정
+# knn_model_file = "./model/model_knn.pkl"
+# scaler_file = "./model/scaler_knn.pkl"
+#
+# # KNN 모델 로드
+# knn_model = joblib.load(knn_model_file)
+#
+# # Scaler 로드
+# scaler = joblib.load(scaler_file)
+#
+# # 데이터 전처리 함수
+# def preprocess_data(data):
+#     scaled_data = scaler.transform(np.array(data).reshape(1, -1))
+#     return scaled_data
+#
+#
+# # CSV 파일 레코드 한 줄씩 처리 함수
+# def process_record(record):
+#     # 선택한 필드 추출
+#     selected_data = [float(record[0]), float(record[1]), float(record[2]), float(record[3]), float(record[4])]
+#
+#     # 데이터 전처리
+#     preprocessed_data = preprocess_data(selected_data)
+#
+#     # 예측
+#     prediction = knn_model.predict(preprocessed_data)
+#
+#     # 예측 결과 반환
+#     return prediction
+#
+# # /predict 엔드포인트
+# @app.route("/predict", methods=["POST"])
+# def predict():
+#     if "file" not in request.files:
+#         return "No file provided"
+#
+#     file = request.files["file"]
+#
+#     if file.filename == "":
+#         return "No file selected"
+#
+#     if file:
+#         # CSV 파일 열기
+#         csv_reader = csv.reader(file.read().decode('utf-8').splitlines())
+#
+#         # 첫 줄은 헤더로 처리
+#         header = next(csv_reader)
+#
+#         # 필드 인덱스 추출
+#         temperature_idx = header.index("Temperature")
+#         heartbeat_idx = header.index("Heartbeat")
+#         gyrox_idx = header.index("GyroX")
+#         gyroy_idx = header.index("GyroY")
+#         gyroz_idx = header.index("GyroZ")
+#
+#         # 각 레코드를 한 줄씩 읽어 처리
+#         for record in csv_reader:
+#             # 레코드 처리
+#             selected_data = [record[temperature_idx], record[heartbeat_idx], record[gyrox_idx], record[gyroy_idx], record[gyroz_idx]]
+#             prediction = process_record(selected_data)
+#             print(prediction)  # 예측 결과 출력
+#
+#             # 1초 대기
+#             time.sleep(1)
+#
+#         return "Prediction completed"
+#
+# if __name__ == "__main__":
+#     app.run(debug=True)
+
+#=================================================================================================#
+#=================================================================================================#
+#=================================================================================================#
+#=================================================================================================#
+
+# import time
+# import csv
+# from flask import Flask, request, Response
+# import numpy as np
+# import joblib
+#
+# app = Flask(__name__)
+#
+# # KNN 모델 경로 지정
+# knn_model_file = "./model/model_knn.pkl"
+# scaler_file = "./model/scaler_knn.pkl"
+#
+# # KNN 모델 로드
+# knn_model = joblib.load(knn_model_file)
+#
+# # Scaler 로드
+# scaler = joblib.load(scaler_file)
+#
+# # 데이터 전처리 함수
+# def preprocess_data(data):
+#     scaled_data = scaler.transform(np.array(data).reshape(1, -1))
+#     return scaled_data
+#
+#
+# # CSV 파일 레코드 한 줄씩 처리 함수
+# def process_record(record):
+#     # 선택한 필드 추출
+#     selected_data = [float(record[0]), float(record[1]), float(record[2]), float(record[3]), float(record[4])]
+#
+#     # 데이터 전처리
+#     preprocessed_data = preprocess_data(selected_data)
+#
+#     # 예측
+#     prediction = knn_model.predict(preprocessed_data)
+#
+#     # 예측 결과 반환
+#     return prediction
+#
+# # /predict 엔드포인트
+# @app.route("/predict", methods=["POST"])
+# def predict():
+#     file = request.files.get("file")
+#
+#     if not file:
+#         return "No file provided"
+#
+#     if file.filename == "":
+#         return "No file selected"
+#
+#     # CSV 파일 열기
+#     csv_reader = csv.reader(file.read().decode('utf-8').splitlines())
+#
+#     # 첫 줄은 헤더로 처리
+#     header = next(csv_reader)
+#
+#     # 필드 인덱스 추출
+#     temperature_idx = header.index("Temperature")
+#     heartbeat_idx = header.index("Heartbeat")
+#     gyrox_idx = header.index("GyroX")
+#     gyroy_idx = header.index("GyroY")
+#     gyroz_idx = header.index("GyroZ")
+#
+#     def generate_predictions():
+#         # 각 레코드를 한 줄씩 읽어 처리
+#         for record in csv_reader:
+#             # 레코드 처리
+#             selected_data = [record[temperature_idx], record[heartbeat_idx], record[gyrox_idx], record[gyroy_idx], record[gyroz_idx]]
+#             prediction = process_record(selected_data)
+#             print(prediction)  # 예측 결과 출력
+#
+#             # 1초 대기
+#             time.sleep(1)
+#
+#             # 예측 결과를 포스트맨에 직접 출력
+#             yield str(prediction) + "\n"
+#
+#     return Response(generate_predictions(), mimetype="text/plain")
+#
+# if __name__ == "__main__":
+#     app.run(debug=True)
+
+#=================================================================================================#
+#=================================================================================================#
+#=================================================================================================#
+#=================================================================================================#
+
+# import time
+import csv
+from flask import Flask, request, json #, Response
 import numpy as np
+import joblib
 
 app = Flask(__name__)
 
-@app.route('/api/predict', methods=['POST'])
-def predict(): # 모델 예측을 위한 함수, HTTP POST 요청을 처리
-    if classifier: # 학습된 분류기(classifier)가 있을 경우에만 예측 수행
-        try:
-            content = request.json
-            # HTTP POST 요청으로 전송된 JSON 형식의 데이터를 가져옴. request 객체는 Flask에서 제공하는 클래스로 HTTP 요청 정보를 저장
-            print(content)
-            Sex = content['Sex']
-            Age = content['Age']
-            Pclass = content['Pclass']
-            # JSON 형식으로 전송된 데이터에서 각 필드에 해당하는 값을 가져옴.
-            input = [[Sex, Age, Pclass]] # 입력 데이터를 2차원 리스트로
-            print('raw: ', input)
-            input_ct = ct.transform(input)
-            input_sc = sc.transform(input_ct)
-            # 입력 데이터에 대해, 카테고리컬 변수를 라벨 인코딩하는 등의 전처리를 수행. ct와 sc는 이전에 학습된 전처리기.
-            prediction = classifier.predict(input_sc)
-            return jsonify({'prediction': str(prediction)})
-            # 전처리된 데이터를 사용하여 분류기에 입력으로 넣고 예측 결과를 반환. jsonify 함수를 사용하여 JSON 형식으로 결과를 반환.
-        except:
-            return jsonify({'trace': traceback.format_exc()})
-    else:
-        print('Model not found')
-        return('Model not found')
+# KNN 모델 경로 지정
+knn_model_file = "./model/model_knn.pkl"
+scaler_file = "./model/scaler_knn.pkl"
 
-if __name__ == '__main__': # 현재 파일이 직접 실행될 때만 코드 블록을 실행
-    classifier = joblib.load("./model/model.pkl")
-    # joblib.load() 함수를 사용하여 저장된 학습된 분류기를 로드. "./model/model.pkl"로 로드할 파일의 경로와 이름을 지정.
-    sc = joblib.load("./model/sc.pkl")
-    ct = joblib.load("./model/ct.pkl") # joblib.load() 함수를 사용하여 저장된 데이터 전처리기(ct)를 로드.
-    print ('Model loaded')
-    app.run(debug=True) #  debug=True는 디버그 모드를 활성화하며, 에러 발생 시 디버그 정보를 보여줌.
+# KNN 모델 로드
+knn_model = joblib.load(knn_model_file)
+
+# Scaler 로드
+scaler = joblib.load(scaler_file)
+
+# 필드 인덱스 추출
+def extract_field_indexes(header):
+    temperature_idx = header.index("Temperature")
+    heartbeat_idx = header.index("Heartbeat")
+    gyrox_idx = header.index("GyroX")
+    gyroy_idx = header.index("GyroY")
+    gyroz_idx = header.index("GyroZ")
+    return temperature_idx, heartbeat_idx, gyrox_idx, gyroy_idx, gyroz_idx
+
+# 데이터 전처리 함수
+def preprocess_data(data):
+    # 데이터 타입을 float로 변환
+    selected_data = [float(value) for value in data]
+    scaled_data = scaler.transform(np.array(selected_data).reshape(1, -1))
+    return scaled_data
+
+
+# CSV 파일 레코드 한 줄씩 처리 함수
+def process_record(record, temperature_idx, heartbeat_idx, gyrox_idx, gyroy_idx, gyroz_idx):
+    # 선택한 필드 추출
+    selected_data = [record[temperature_idx], record[heartbeat_idx], record[gyrox_idx], record[gyroy_idx], record[gyroz_idx]]
+
+    # 데이터 전처리
+    preprocessed_data = preprocess_data(selected_data)
+
+    # 예측
+    prediction = knn_model.predict(preprocessed_data)
+
+    # 예측 결과 반환
+    return prediction.tolist()  # 리스트로 변환하여 반환
+
+
+# /predict 엔드포인트
+@app.route("/predict", methods=["POST"])
+def predict():
+    file = request.files.get("file")
+
+    if not file:
+        return "No file provided"
+
+    if file.filename == "":
+        return "No file selected"
+
+    # CSV 파일 열기
+    csv_reader = csv.reader(file.read().decode('utf-8').splitlines())
+
+    # 첫 줄은 헤더로 처리
+    header = next(csv_reader)
+
+    # 필드 인덱스 추출
+    temperature_idx, heartbeat_idx, gyrox_idx, gyroy_idx, gyroz_idx = extract_field_indexes(header)
+
+    # 예측 결과 리스트 초기화
+    predictions = []
+
+    # 각 레코드를 한 줄씩 읽어 처리
+    for record in csv_reader:
+        # 레코드 처리
+        prediction = process_record(record, temperature_idx, heartbeat_idx, gyrox_idx, gyroy_idx, gyroz_idx)
+        predictions.append(prediction)
+
+    # 예측 결과를 JSON 형식으로 반환
+    return json.dumps({"predictions": predictions}), 200, {"Content-Type": "application/json"}
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
+#=================================================================================================#
+#=================================================================================================#
+#=================================================================================================#
+#=================================================================================================#
+
+
+# import time
+# import csv
+# from flask import Flask, request, json, Response
+# import numpy as np
+# import joblib
+#
+# app = Flask(__name__)
+#
+# # KNN 모델 경로 지정
+# knn_model_file = "./model/model_knn.pkl"
+# scaler_file = "./model/scaler_knn.pkl"
+#
+# # KNN 모델 로드
+# knn_model = joblib.load(knn_model_file)
+#
+# # Scaler 로드
+# scaler = joblib.load(scaler_file)
+#
+# # 필드 인덱스 추출
+# def extract_field_indexes(header):
+#     temperature_idx = header.index("Temperature")
+#     heartbeat_idx = header.index("Heartbeat")
+#     gyrox_idx = header.index("GyroX")
+#     gyroy_idx = header.index("GyroY")
+#     gyroz_idx = header.index("GyroZ")
+#     return temperature_idx, heartbeat_idx, gyrox_idx, gyroy_idx, gyroz_idx
+#
+# # 데이터 전처리 함수
+# def preprocess_data(data):
+#     # 데이터 타입을 float로 변환
+#     selected_data = [float(value) for value in data]
+#     scaled_data = scaler.transform(np.array(selected_data).reshape(1, -1))
+#     return scaled_data
+#
+#
+# # CSV 파일 레코드 한 줄씩 처리 함수
+# def process_record(record, temperature_idx, heartbeat_idx, gyrox_idx, gyroy_idx, gyroz_idx):
+#     # 선택한 필드 추출
+#     selected_data = [record[temperature_idx], record[heartbeat_idx], record[gyrox_idx], record[gyroy_idx], record[gyroz_idx]]
+#
+#     # 데이터 전처리
+#     preprocessed_data = preprocess_data(selected_data)
+#
+#     # 예측
+#     prediction = knn_model.predict(preprocessed_data)
+#
+#     # 예측 결과 반환
+#     return prediction.tolist()  # 리스트로 변환하여 반환
+#
+#
+# # /predict 엔드포인트
+# @app.route("/predict", methods=["POST"])
+# def predict():
+#     file = request.files.get("file")
+#
+#     if not file:
+#         return "No file provided"
+#
+#     if file.filename == "":
+#         return "No file selected"
+#
+#     # CSV 파일 열기
+#     csv_reader = csv.reader(file.read().decode('utf-8').splitlines())
+#
+#     # 첫 줄은 헤더로 처리
+#     header = next(csv_reader)
+#
+#     # 필드 인덱스 추출
+#     temperature_idx, heartbeat_idx, gyrox_idx, gyroy_idx, gyroz_idx = extract_field_indexes(header)
+#
+#     # 예측 결과 리스트 초기화
+#     predictions = []
+#
+#     # 각 레코드를 한 줄씩 읽어 처리
+#     for record in csv_reader:
+#         # 레코드 처리
+#         prediction = process_record(record, temperature_idx, heartbeat_idx, gyrox_idx, gyroy_idx, gyroz_idx)
+#         predictions.append(prediction)
+#
+#     # 예측 결과를 스트리밍으로 반환
+#     def predictions_stream():
+#         for prediction in predictions:
+#             yield json.dumps({"prediction": prediction}) + "\n"
+#
+#     return Response(predictions_stream(), mimetype="application/json")
+#
+#
+# if __name__ == "__main__":
+#     app.run(debug=True)
+
+
+
 
 
 
