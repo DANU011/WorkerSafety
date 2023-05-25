@@ -8,6 +8,7 @@ const Dashboard = ({loginInfo}) => {
   const [tableData, setTableData] = useState(null);
 
   const handleTableData = (value) => {
+    // console.log('value', value);
     setTableData(value);
   }
 

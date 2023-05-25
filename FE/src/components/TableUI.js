@@ -23,14 +23,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
 import TextField from '@mui/material/TextField';
 // import AddIcon from '@mui/icons-material/Add';
-
-const createData = (name, calories, fat) => {
-  return {
-    name,
-    calories,
-    fat,
-  };
-}
+import api from '../service/api';
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -62,19 +55,19 @@ const stableSort = (array, comparator) => {
 
 const headCells = [
   {
-    id: 'name',
+    id: 'userCode',
     numeric: true,
     disablePadding: false,
     label: '작업자코드',
   },
   {
-    id: 'calories',
+    id: 'name',
     numeric: true,
     disablePadding: false,
     label: '이름',
   },
   {
-    id: 'fat',
+    id: 'state',
     numeric: true,
     disablePadding: false,
     label: '상태',
@@ -188,24 +181,36 @@ EnhancedTableToolbar.propTypes = {
 
 const TableUI = ({onValueChange}) => {
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('useCode');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [value, setValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const [rows, setRows] = useState([
-    createData(2, 305, '비정상'),
-    createData(4, 452, '정상'),
-    createData(6, 262, '정상'),
-    createData(1, 237, '정상'),
-    createData(3, 375, '비정상'),
-    createData(5, 518, '정상'),
-    createData(7, 392, '정상'),
-    createData(8, 243, '정상')
-  ]);
+  const token = sessionStorage.getItem('token');
+
+  useEffect(() => {
+    api.get('/worker/list', 
+          {
+              headers: {
+              Authorization: `Bearer ${token}`
+              }
+          }
+        )
+        .then((response) => {
+          const listdata = response.data;
+          // console.log(listdata);
+          setRows(listdata);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+  }, [token]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -215,19 +220,19 @@ const TableUI = ({onValueChange}) => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
+      const newSelected = rows.map((n) => n.userCode);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, userCode) => {
+    const selectedIndex = selected.indexOf(userCode);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, userCode);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -256,9 +261,10 @@ const TableUI = ({onValueChange}) => {
   // };
 
   const handleDelete = () => {
-    const updatedRows = rows.filter((row) => !selected.includes(row.name));
+    const updatedRows = rows.filter((row) => !selected.includes(row.userCode));
     setRows(updatedRows);
     setSelected([]);
+    onValueChange(updatedRows);
   };
 
   // const handleInputAddChange = (event) => {
@@ -282,7 +288,7 @@ const TableUI = ({onValueChange}) => {
   //   setSelected([]);
   // };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (userCode) => selected.indexOf(userCode) !== -1;
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -291,24 +297,26 @@ const TableUI = ({onValueChange}) => {
     () =>
       stableSort(
         rows.filter((row) =>
-          String(row.fat).includes(searchValue)
+          String(row.state).includes(searchValue)
         ),
         getComparator(order, orderBy)
       ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [rows, order, orderBy, page, rowsPerPage, searchValue],
   );
     
-  const tableData = () => {
-    const data = visibleRows.map((row) => {
-      return row.name;
-    })
-    setValue(data);
-    onValueChange(data);
-  }
+  useEffect(() => {
+    if (!loading) {
+      const tableData = () => {
+        const data = visibleRows.map((row) => {
+          // console.log(row.userCode);
+          return row.userCode;
+        });
+        onValueChange(data);
+      };
 
-  useEffect(() =>{
-    tableData();
-  }, [visibleRows]);
+      tableData();
+    }
+  }, [loading, visibleRows]);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -330,17 +338,17 @@ const TableUI = ({onValueChange}) => {
                 />
                 <TableBody>
                 {visibleRows.map((row, index) => {
-                    const isItemSelected = isSelected(row.name);
+                    const isItemSelected = isSelected(row.userCode);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
                     <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.name)}
+                        onClick={(event) => handleClick(event, row.userCode)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.name}
+                        key={row.userCode}
                         selected={isItemSelected}
                         sx={{ cursor: 'pointer' }}
                     >
@@ -361,10 +369,10 @@ const TableUI = ({onValueChange}) => {
                         align='center'
                         sx={{ width: '40%' }}
                         >
-                        {row.name}
+                        {row.userCode}
                         </TableCell>
-                        <TableCell align="center" sx={{ width: '30%' }}>{row.calories}</TableCell>
-                        <TableCell align="center" sx={{ width: '30%' }}>{row.fat}</TableCell>
+                        <TableCell align="center" sx={{ width: '30%' }}>{row.name}</TableCell>
+                        <TableCell align="center" sx={{ width: '30%' }}>{row.state}</TableCell>
                     </TableRow>
                     );
                 })}

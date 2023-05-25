@@ -19,8 +19,6 @@ const Map = ({ value }) => {
   ];
 
   useEffect(() => {
-    let alertShown = false;
-
     const locations = [
       { lat: 35.235891, lng: 129.076942, component: <InfoData1 data={data[0]} /> },
       { lat: 35.235403, lng: 129.076276, component: <InfoData1 data={data[1]} /> },
@@ -68,19 +66,14 @@ const Map = ({ value }) => {
         markers.forEach((marker, index) => {
           const position = marker.getPosition();
           const newPosition = new naver.maps.LatLng(
-            position.lat() + Math.random() * 0.0002 - 0.0001,
-            position.lng() + Math.random() * 0.0002 - 0.0001
+            position.lat() + Math.random() * 0.00003 - 0.00001,
+            position.lng() + Math.random() * 0.00003 - 0.00001
           );
           marker.setPosition(newPosition);
-
-          const markerColor = marker.getIcon().content.includes('color: red');
-          if (markerColor && !alertShown) {
-            alertShown = true;
-            alert("위험 작업자가 있습니다!");
-          }
         });
       }, intervalDuration);
     };
+
     document.head.appendChild(script);
   }, []);
 
