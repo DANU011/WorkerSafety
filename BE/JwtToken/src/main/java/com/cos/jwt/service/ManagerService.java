@@ -24,7 +24,6 @@ public class ManagerService {
 	}
 	
 	public Manager getManager (Manager manager) {
-		//Optional Repository에서 리턴 타입을 Optional로 바로 받을 수 있도록하는것
 		Manager findManager = managerRepo.findByManagerid(manager.getManagerid());
 		return findManager;
 	}
