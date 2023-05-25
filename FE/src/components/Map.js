@@ -3,7 +3,7 @@ import InfoData1 from '../components/Data/InfoData1';
 import InfoData3 from '../components/Data/InfoData3';
 import '../style/components/Map.css';
 
-const Map = ({value}) => {
+const Map = ({ value }) => {
   const [map, setMap] = useState(null);
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
   const [markers, setMarkers] = useState([]);
@@ -13,16 +13,18 @@ const Map = ({value}) => {
   const mapRef = useRef(null);
 
   const data = [
-    { id: 1, text: 'testdata1' },
-    { id: 2, text: 'testdata2' },
-    { id: 3, text: 'testdata3' },
+    { id: 1, text: '정상' },
+    { id: 2, text: '비정상' },
+    { id: 3, text: '정상' },
   ];
 
   useEffect(() => {
+    let alertShown = false;
+
     const locations = [
       { lat: 35.235891, lng: 129.076942, component: <InfoData1 data={data[0]} /> },
       { lat: 35.235403, lng: 129.076276, component: <InfoData1 data={data[1]} /> },
-      { lat: 35.235874, lng: 129.077993, component: <InfoData3 /> },
+      { lat: 35.235874, lng: 129.077993, component: <InfoData3 data={data[2]} /> },
     ];
     const intervalDuration = 700;
     const script = document.createElement('script');
@@ -42,11 +44,12 @@ const Map = ({value}) => {
       setMap(mapInstance);
 
       const markers = locations.map((location, index) => {
+        const markerColor = location.component.props.data.text === '비정상' ? 'red' : 'black';
         const marker = new naver.maps.Marker({
           position: new naver.maps.LatLng(location.lat, location.lng),
           map: mapInstance,
           icon: {
-            content: `<div class='marker'><div class='marker-number'>${value[index]}</div></div>`,
+            content: `<div class='marker' style='color: ${markerColor};'><div class='marker-number'>${value[index]}</div></div>`,
             size: new naver.maps.Size(30, 40),
             anchor: new naver.maps.Point(15, 40),
           },
@@ -69,6 +72,12 @@ const Map = ({value}) => {
             position.lng() + Math.random() * 0.0002 - 0.0001
           );
           marker.setPosition(newPosition);
+
+          const markerColor = marker.getIcon().content.includes('color: red');
+          if (markerColor && !alertShown) {
+            alertShown = true;
+            alert("위험 작업자가 있습니다!");
+          }
         });
       }, intervalDuration);
     };
