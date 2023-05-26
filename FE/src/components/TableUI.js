@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -74,12 +75,23 @@ const headCells = [
   },
 ];
 
+const useStyles = makeStyles((theme) => ({
+  normalState: {
+    color: 'black',
+  },
+  abnormalState: {
+    color: 'red',
+  },
+}));
+
 const EnhancedTableHead = (props) => {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
+
+  const classes = useStyles();
 
   return (
     <TableHead>
@@ -101,6 +113,7 @@ const EnhancedTableHead = (props) => {
             align={headCell.numeric ? 'center' : 'center'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
+            className={headCell.id === 'state' ? classes.columnHeader : null}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -190,6 +203,8 @@ const TableUI = ({onValueChange}) => {
   const [searchValue, setSearchValue] = useState('');
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const classes = useStyles();
 
   const token = sessionStorage.getItem('token');
 
@@ -381,7 +396,7 @@ const TableUI = ({onValueChange}) => {
                         {row.userCode}
                         </TableCell>
                         <TableCell align="center" sx={{ width: '30%' }}>{row.name}</TableCell>
-                        <TableCell align="center" sx={{ width: '30%' }}>{row.state}</TableCell>
+                        <TableCell align="center" sx={{ width: '30%' }} className={row.state === '비정상' ? classes.abnormalState : classes.normalState}>{row.state}</TableCell>
                     </TableRow>
                     );
                 })}
