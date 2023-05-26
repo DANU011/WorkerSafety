@@ -5,8 +5,8 @@ import { styled } from '@mui/styles';
 import LoginForm from "../components/LoginForm";
 import Dashboard from "./Dashboard";
 import Register from './Register';
-import '../style/pages/Home.css';
 import DataDetail from './DataDetail';
+import '../style/pages/Home.css';
 
 const CustomButton = styled(Button)({
   backgroundColor: '#e9531d',

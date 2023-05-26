@@ -204,7 +204,16 @@ const TableUI = ({onValueChange}) => {
         .then((response) => {
           const listdata = response.data;
           // console.log(listdata);
-          setRows(listdata);
+          const state = {
+            1: '정상',
+            2: '비정상',
+            3: '정상',
+          };
+          const allrows = listdata.map((row)=>({
+            ...row, state: state[row.userCode]
+          }));
+          // console.log(allrows);
+          setRows(allrows);
           setLoading(false);
         })
         .catch((error) => {

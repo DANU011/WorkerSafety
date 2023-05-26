@@ -66,8 +66,8 @@ const Map = ({ value }) => {
         markers.forEach((marker, index) => {
           const position = marker.getPosition();
           const newPosition = new naver.maps.LatLng(
-            position.lat() + Math.random() * 0.00003 - 0.00001,
-            position.lng() + Math.random() * 0.00003 - 0.00001
+            position.lat() + Math.random() * 0.0002 - 0.0001,
+            position.lng() + Math.random() * 0.0002 - 0.0001
           );
           marker.setPosition(newPosition);
         });
