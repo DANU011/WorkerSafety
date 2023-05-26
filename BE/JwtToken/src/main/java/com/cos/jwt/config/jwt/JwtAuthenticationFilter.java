@@ -76,7 +76,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				//토큰이름
 				.withSubject("jwt토큰")
 				//토큰 만료시간 60000 == 1분
-				.withExpiresAt(new Date(System.currentTimeMillis()+(60000*30)))
+				.withExpiresAt(new Date(System.currentTimeMillis()+(60000*10)))
 				//비공개 클래임
 				.withClaim("managerid", principalDetails.getmanager().getManagerid())
 				.withClaim("managername", principalDetails.getmanager().getName())
