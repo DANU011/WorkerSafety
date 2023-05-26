@@ -17,12 +17,19 @@ const Map = ({ value }) => {
     { id: 3, text: '정상' },
   ];
 
+  const linedata = [
+    {data: [10, 41, 35, 51, 49, 62, 69, 91, 148]},
+    {data: [20, 50, 60, 51, 70, 62, 50, 40, 100]},
+    {data: [10, 30, 40, 51, 20, 62, 80, 70, 127]},
+  ];
+  
+
   useEffect(() => {
-    const locations = [
-      { lat: 35.235891, lng: 129.076942, component: <InfoData data={data[0]} /> },
-      { lat: 35.235403, lng: 129.076276, component: <InfoData data={data[1]} /> },
-      { lat: 35.235874, lng: 129.077993, component: <InfoData data={data[2]} /> },
-    ];
+    const locations = data.map((item, index) => ({
+      lat: 35.235891 + index * 0.0005,
+      lng: 129.076942 + index * 0.0005,
+      component: <InfoData data={item} linedata={linedata[index]} />,
+    }));
     const intervalDuration = 700;
     const script = document.createElement('script');
     script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.REACT_APP_NAVER_MAPS_CLIENT_ID}&submodules=geocoder`;

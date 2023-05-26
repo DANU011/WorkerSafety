@@ -1,15 +1,18 @@
 import { useRef, useEffect } from 'react';
 import ApexCharts from 'apexcharts';
 
-const LineChart = () => {
+const LineChart = ({linedata}) => {
   const chartRef = useRef(null);
+  // console.log(linedata.data);
 
   useEffect(() => {
     const options = {
-      series: [{
-        name: "Desktops",
-        data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-      }],
+      series: [
+        {
+          name: 'Series 1',
+          data: linedata.data,
+        }
+      ],
       chart: {
         height: 250,
         type: 'line',
@@ -44,7 +47,7 @@ const LineChart = () => {
     return () => {
       chart.destroy();
     };
-  }, []);
+  }, [linedata]);
 
   return <div ref={chartRef} />;
 };
