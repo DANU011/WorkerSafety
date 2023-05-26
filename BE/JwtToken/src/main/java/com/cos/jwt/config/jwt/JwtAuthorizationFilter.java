@@ -82,14 +82,14 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 					SecurityContextHolder.getContext().setAuthentication(authentication);
 					}
 				}catch (IllegalArgumentException e) {
-		                logger.error("유효하지 않은 토큰");		              
+		                logger.error("유효하지 않은 토큰");
 		                setErrorResponse(response, "유효하지 않은 토큰");
 		            } catch (TokenExpiredException e) {
 		                logger.warn("토큰 기한 만료");
 		                setErrorResponse(response, "토큰 기한 만료");
 		            }catch(JWTDecodeException e){
 		                logger.error("토큰 형식 오류.");
-		            	setErrorResponse(response, "토큰 형식 오류");
+		                setErrorResponse(response, "토큰 형식 오류");
 		            }
 			
 			 chain.doFilter(request, response);
