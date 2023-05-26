@@ -1,67 +1,97 @@
 import { useState } from 'react';
+import { Button, CssBaseline, TextField, Box, Typography, Container } from '@mui/material';
+import { styled } from '@mui/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import jwt_decode from 'jwt-decode';
 import api from '../service/api';
-import "../style/components/LoginForm.css";
+import '../style/components/LoginForm.css';
+
+const CustomTextField = styled(TextField)({
+  '& .MuiInputLabel-root.Mui-focused': {
+    color: '#FF7F50',
+  },
+  '& .MuiOutlinedInput-root': {
+    '&.Mui-focused fieldset': {
+      borderColor: '#FF7F50',
+    },
+  },
+});
+
+const defaultTheme = createTheme();
 
 const LoginForm = ({ onLoginSuccess }) => {
-  const [managerid, setManagerid] = useState("");
-  const [password, setPassword] = useState("");
+  const [managerid, setManagerid] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = (event) => {
     event.preventDefault();
     if (!managerid || !password) {
-      console.log("아이디와 비밀번호를 입력해주세요.");
+      console.log('아이디와 비밀번호를 입력해주세요.');
       return;
     }
-    api.post(`/login`, { managerid, password }, { withCredentials: true })
-      .then(response => {
+    api
+      .post(`/login`, { managerid, password }, { withCredentials: true })
+      .then((response) => {
         // console.log(response.headers.authorization);
-        const jwtToken = response.headers.authorization.split(" ")[1];
+        const jwtToken = response.headers.authorization.split(' ')[1];
         sessionStorage.setItem('token', jwtToken);
         // console.log(sessionStorage.getItem("token"));
         const decodedToken = jwt_decode(jwtToken);
         // const managerid = decodedToken.managerid;
         const managername = decodedToken.managername;
         // console.log(managerid, managername);
-        
+
         const loginInfo = {
           name: managername,
         };
 
         onLoginSuccess(loginInfo);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   };
 
   return (
-    <div className="login-form-container">
-      <h1 className="login-form-title">Log in to your account</h1>
-      <form className="login-form" onSubmit={handleLogin}>
-        <div className="login-form-field">
-          <label htmlFor="managerid">ID</label>
-          <input
-            type="text"
-            id="managerid"
-            value={managerid}
-            onChange={(e) => setManagerid(e.target.value)}
-          />
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className="login-form-container">
+          <Typography component="h1" variant="h5" className="login-form-title">
+            Log in to your account
+          </Typography>
+          <Box component="form" onSubmit={handleLogin} className="login-form" noValidate>
+            <CustomTextField
+              margin="normal"
+              required
+              fullWidth
+              id="managerid"
+              label="ID"
+              name="managerid"
+              autoComplete="managerid"
+              autoFocus
+              value={managerid}
+              onChange={(e) => setManagerid(e.target.value)}
+            />
+            <CustomTextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type="submit" fullWidth variant="contained" sx={{ backgroundColor: '#e9531d', marginTop: '30px', color: 'white', '&:hover': { backgroundColor: '#FF7F50' } }}>
+              LOG IN
+            </Button>
+          </Box>
         </div>
-        <div className="login-form-field">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button className="login-form-button" type="submit">
-          LOG IN
-        </button>
-      </form>
-    </div>
+      </Container>
+    </ThemeProvider>
   );
 }
 

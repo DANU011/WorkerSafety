@@ -4,7 +4,6 @@
   justify-content: center;
   align-items: center;
   height: 80vh;
-  background-color: #FEE5D9;
 }
 
 .login-form-title {
@@ -21,7 +20,7 @@
   width: 300px;
 }
 
-.login-form-field {
+/* .login-form-field {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -50,4 +49,4 @@
 
 .login-form-button:hover {
   background-color: #D2691E;
-}
+} */

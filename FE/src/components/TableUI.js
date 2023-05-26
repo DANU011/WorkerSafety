@@ -204,8 +204,6 @@ const TableUI = ({onValueChange}) => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const classes = useStyles();
-
   const token = sessionStorage.getItem('token');
 
   useEffect(() => {
@@ -341,6 +339,8 @@ const TableUI = ({onValueChange}) => {
       tableData();
     }
   }, [loading, visibleRows]);
+
+  const classes = useStyles();
 
   return (
     <Box sx={{ width: '100%' }}>

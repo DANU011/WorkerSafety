@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import InfoData1 from '../components/Data/InfoData1';
-import InfoData3 from '../components/Data/InfoData3';
+import InfoData from '../components/Data/InfoData';
 import '../style/components/Map.css';
 
 const Map = ({ value }) => {
@@ -20,9 +19,9 @@ const Map = ({ value }) => {
 
   useEffect(() => {
     const locations = [
-      { lat: 35.235891, lng: 129.076942, component: <InfoData1 data={data[0]} /> },
-      { lat: 35.235403, lng: 129.076276, component: <InfoData1 data={data[1]} /> },
-      { lat: 35.235874, lng: 129.077993, component: <InfoData3 data={data[2]} /> },
+      { lat: 35.235891, lng: 129.076942, component: <InfoData data={data[0]} /> },
+      { lat: 35.235403, lng: 129.076276, component: <InfoData data={data[1]} /> },
+      { lat: 35.235874, lng: 129.077993, component: <InfoData data={data[2]} /> },
     ];
     const intervalDuration = 700;
     const script = document.createElement('script');

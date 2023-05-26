@@ -62,14 +62,6 @@ const Register = () => {
           required
           sx={{ marginTop: '20px' }}
         />
-        <CustomTextField
-          label="Role"
-          type="role"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          required
-          sx={{ marginTop: '20px' }}
-        />
         <Button type="submit" variant="contained" size="small" sx={{ backgroundColor: '#e9531d', marginTop: '30px', color: 'white', '&:hover': { backgroundColor: '#FF7F50' } }}>관리자 등록</Button>
       </form>
     </div>
