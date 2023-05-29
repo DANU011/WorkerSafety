@@ -32,14 +32,18 @@ const LoginForm = ({ onLoginSuccess }) => {
     api
       .post(`/login`, { managerid, password }, { withCredentials: true })
       .then((response) => {
-        // console.log(response.headers.authorization);
-        const jwtToken = response.headers.authorization.split(' ')[1];
-        sessionStorage.setItem('token', jwtToken);
-        // console.log(sessionStorage.getItem("token"));
-        const decodedToken = jwt_decode(jwtToken);
-        // const managerid = decodedToken.managerid;
+        console.log(response.headers['authorization']);
+        console.log(response.headers['refreshtoken']);
+        const accessToken = response.headers['authorization'].split(' ')[1];
+        sessionStorage.setItem('accessToken', accessToken);
+        console.log(accessToken);
+        const refreshToken = response.headers['refreshtoken']; 
+        sessionStorage.setItem('refreshToken', refreshToken);
+        console.log(refreshToken);
+        const decodedToken = jwt_decode(accessToken);
+        const managerid = decodedToken.managerid;
         const managername = decodedToken.managername;
-        // console.log(managerid, managername);
+        console.log(managerid, managername);
 
         const loginInfo = {
           name: managername,

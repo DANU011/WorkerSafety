@@ -204,19 +204,20 @@ const TableUI = ({onValueChange}) => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const token = sessionStorage.getItem('token');
+  const accessToken = sessionStorage.getItem('accessToken');
+  // console.log(accessToken);
 
   useEffect(() => {
     api.get('/worker/list', 
           {
               headers: {
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${accessToken}`
               }
           }
         )
         .then((response) => {
-          const listdata = response.data;
-          // console.log(listdata);
+          const listdata = response;
+          console.log(listdata);
           const state = {
             1: '정상',
             2: '비정상',
@@ -225,14 +226,14 @@ const TableUI = ({onValueChange}) => {
           const allrows = listdata.map((row)=>({
             ...row, state: state[row.userCode]
           }));
-          // console.log(allrows);
+          console.log(allrows);
           setRows(allrows);
           setLoading(false);
         })
         .catch((error) => {
           console.error(error);
         });
-  }, [token]);
+  }, [accessToken]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
