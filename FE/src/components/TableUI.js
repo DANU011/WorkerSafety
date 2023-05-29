@@ -216,7 +216,7 @@ const TableUI = ({onValueChange}) => {
           }
         )
         .then((response) => {
-          const listdata = response;
+          const listdata = response.data;
           console.log(listdata);
           const state = {
             1: '정상',

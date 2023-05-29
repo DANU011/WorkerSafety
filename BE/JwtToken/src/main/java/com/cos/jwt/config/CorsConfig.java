@@ -19,6 +19,7 @@ public class CorsConfig implements WebMvcConfigurer {
 		config.addAllowedOrigin("http://localhost:3000"); // 모든 ip에 응답을 허용하겠다
 		config.addAllowedHeader("*"); // 모든 header에 응답을 허용하겠다.
 		config.addExposedHeader("Authorization");//Authorization 응답허용
+		config.addExposedHeader("Refreshtoken");//Refreshtoken 응답허용
 		config.addAllowedMethod("*"); // 모든 post,get, delete, patch 요청을 허용하겠다.
 		source.registerCorsConfiguration("/**", config);// /**에 들어오는 모든주소는 config의 설정을 따라 하라
 		return new CorsFilter(source);

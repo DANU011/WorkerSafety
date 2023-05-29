@@ -25,6 +25,10 @@ public class WorkerDetails {
 	private Double Lat;
 	private Double Lng;
 	private Timestamp Time;
+	
+	public WorkerDetails() {
+		
+	}
 	public Double getNo() {
 		return no;
 	}
