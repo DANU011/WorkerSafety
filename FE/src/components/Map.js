@@ -4,9 +4,9 @@ import '../style/components/Map.css';
 
 const Map = ({ value }) => {
   const [map, setMap] = useState(null);
-  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(0);
   const [markers, setMarkers] = useState([]);
-  const [isInfoDataVisible, setIsInfoDataVisible] = useState(false);
+  const [isInfoDataVisible, setIsInfoDataVisible] = useState(true);
   const [selectedComponent, setSelectedComponent] = useState(null);
 
   const mapRef = useRef(null);
@@ -46,6 +46,10 @@ const Map = ({ value }) => {
       };
       const mapInstance = new naver.maps.Map(mapRef.current, mapOptions);
       setMap(mapInstance);
+
+      const selectedLocation = locations[selectedMarkerIndex];
+      setSelectedComponent(selectedLocation.component);
+      setIsInfoDataVisible(true);
 
       const markers = locations.map((location, index) => {
         const markerColor = location.component.props.data.text === '비정상' ? 'red' : 'black';
