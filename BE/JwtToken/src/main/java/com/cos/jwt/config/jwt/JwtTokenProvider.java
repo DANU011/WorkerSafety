@@ -11,7 +11,7 @@ public class JwtTokenProvider {
     //private static final String SECRET_KEY = "yourSecretKey";
 
     // Access Token의 유효시간 (30분)
-    private static final long ACCESS_TOKEN_EXPIRATION_MS = 1 * 60 * 1000;
+    private static final long ACCESS_TOKEN_EXPIRATION_MS = 10 * 60 * 1000;
 
     // Refresh Token의 유효시간 (7일)
     private static final long REFRESH_TOKEN_EXPIRATION_MS = 7 * 24 * 60 * 60 * 1000;

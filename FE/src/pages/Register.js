@@ -20,7 +20,6 @@ const Register = () => {
   const [managerid, setManagerid] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [role, setRole] = useState('');
 
   const navigate = useNavigate();
 
@@ -28,7 +27,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      await api.post('/user/join', { managerid, password, name, role });
+      await api.post('/user/join', { managerid, password, name });
       navigate('/');
     } catch (error) {
       console.error(error);

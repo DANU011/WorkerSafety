@@ -216,22 +216,40 @@ const TableUI = ({onValueChange}) => {
           }
         )
         .then((response) => {
-          const listdata = response.data;
-          console.log(listdata);
+          // 데이터를 두 개의 배열로 분리
+          const dataArray = response.data.split('][');
+          // 각 배열을 JSON 배열로 변환
+          const parsedData = dataArray.map((data) => {
+          // 배열의 처음과 끝에 대괄호가 없다면 추가해줍니다.
+          if (!data.startsWith('[')) data = '[' + data;
+          if (!data.endsWith(']')) data = data + ']';
+          // JSON 배열로 파싱
+          return JSON.parse(data);
+          });
+
+          const listdata = parsedData[0];
+          // console.log(listdata);
+
           const state = {
             1: '정상',
             2: '비정상',
             3: '정상',
           };
+
           const allrows = listdata.map((row)=>({
             ...row, state: state[row.userCode]
           }));
-          console.log(allrows);
+          // console.log(allrows);
           setRows(allrows);
           setLoading(false);
         })
         .catch((error) => {
           console.error(error);
+          if (error.response.status === 403) {
+            window.location.href = '/';
+        } else {
+            console.error(error);
+        }
         });
   }, [accessToken]);
 

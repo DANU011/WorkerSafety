@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Button, CssBaseline, TextField, Box, Typography, Container } from '@mui/material';
+import { Button, TextField, Box, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import jwt_decode from 'jwt-decode';
 import api from '../service/api';
 import '../style/components/LoginForm.css';
@@ -16,8 +15,6 @@ const CustomTextField = styled(TextField)({
     },
   },
 });
-
-const defaultTheme = createTheme();
 
 const LoginForm = ({ onLoginSuccess }) => {
   const [managerid, setManagerid] = useState('');
@@ -57,9 +54,6 @@ const LoginForm = ({ onLoginSuccess }) => {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <div className="login-form-container">
           <Typography component="h1" variant="h5" className="login-form-title">
             Log in to your account
@@ -94,8 +88,6 @@ const LoginForm = ({ onLoginSuccess }) => {
             </Button>
           </Box>
         </div>
-      </Container>
-    </ThemeProvider>
   );
 }
 
