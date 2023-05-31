@@ -203,18 +203,7 @@ const TableUI = ({onValueChange}) => {
           }
         )
         .then((response) => {
-          // 데이터를 두 개의 배열로 분리
-          const dataArray = response.data.split('][');
-          // 각 배열을 JSON 배열로 변환
-          const parsedData = dataArray.map((data) => {
-          // 배열의 처음과 끝에 대괄호가 없다면 추가해줍니다.
-          if (!data.startsWith('[')) data = '[' + data;
-          if (!data.endsWith(']')) data = data + ']';
-          // JSON 배열로 파싱
-          return JSON.parse(data);
-          });
-
-          const listdata = parsedData[0];
+          const listdata = response.data;
           // console.log(listdata);
 
           const state = {

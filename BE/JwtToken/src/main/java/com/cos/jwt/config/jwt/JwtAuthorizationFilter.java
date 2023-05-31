@@ -76,7 +76,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		            SecurityContextHolder.getContext().setAuthentication(authentication);
 		
 		            // 다음 필터로 요청 전달
-		            chain.doFilter(request, response);
+//		            chain.doFilter(request, response);
 		        }
 		    } catch (IllegalArgumentException e) {
 		        logger.error("유효하지 않은 토큰");

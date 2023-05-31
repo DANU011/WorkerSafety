@@ -18,11 +18,10 @@ const Map = ({ value }) => {
   ];
 
   const linedata = [
-    {data: [10, 41, 35, 51, 49, 62, 69, 91, 148]},
-    {data: [20, 50, 60, 51, 70, 62, 50, 40, 100]},
-    {data: [10, 30, 40, 51, 20, 62, 80, 70, 127]},
+    { data: [10, 41, 35, 51, 49, 62, 69, 91, 148] },
+    { data: [20, 50, 60, 51, 70, 62, 50, 40, 100] },
+    { data: [10, 30, 40, 51, 20, 62, 80, 70, 127] },
   ];
-  
 
   useEffect(() => {
     const locations = data.map((item, index) => ({
@@ -86,6 +85,18 @@ const Map = ({ value }) => {
 
     document.head.appendChild(script);
   }, []);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (markers.some(marker => marker.getIcon().content.includes('red'))) {
+        alert('위험 작업자가 있습니다!');
+      }
+    }, 3000);
+  
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [markers]);
 
   const handleCloseInfoData = () => {
     setIsInfoDataVisible(false);
