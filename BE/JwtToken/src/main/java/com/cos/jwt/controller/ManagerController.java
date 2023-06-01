@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.client.RestTemplate;
 
-import com.cos.jwt.Conponent.WorkerDeteilComponent;
 import com.cos.jwt.domain.Manager;
 import com.cos.jwt.domain.Worker;
 import com.cos.jwt.domain.WorkerDetails;
@@ -69,13 +68,11 @@ public class ManagerController {
 	
 	RestTemplate restTemplate = new RestTemplate();
 	int counter = 1;
-	
+	 @Scheduled(fixedRate = 2000)
 	@PostMapping("/worker/listdetail")
-	public ResponseEntity<String> workerlistdetail() {
+	public ResponseEntity<?> workerlistdetail() {
 //		WorkerDeteilComponent workerDeteilComponent;
-//		
-//		workerDeteilComponent.sendWorkerListDetail();
-//		workerDeteilComponent.sendWorkerListDetail();		
+//		workerDeteilComponent.sendWorkerListDetail();	
         String url = "http://localhost:5000/predict";
     	//HttpHeaders  HTTP 요청 또는 응답의 헤더 정보를 담는 클래스
     	HttpHeaders headers = new HttpHeaders();
@@ -84,10 +81,11 @@ public class ManagerController {
     	Integer no = counter++;
     	List<WorkerDetails> list = workerdeDetailsService.WorkerDetailList(no);
     	HttpEntity<List<WorkerDetails>> entity = new HttpEntity<>(list, headers);
-    	
+    	System.out.println(list);
     	// HTTP POST 요청을 보내고 응답을 받는 메서드(요청보낼 url,요청에 담을 데이터와 헤더를 담은 객체,요청에 담을 데이터와 헤더를 담은 객체)
     	String response = restTemplate.postForObject(url, entity, String.class);
     	System.out.println(response);
+    	
     	return ResponseEntity.ok(list+response);
     }
 	
