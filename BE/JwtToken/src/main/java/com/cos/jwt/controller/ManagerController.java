@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.cos.jwt.domain.Manager;
 import com.cos.jwt.domain.Worker;
+import com.cos.jwt.domain.WorkerDetails;
 import com.cos.jwt.service.ManagerService;
 import com.cos.jwt.service.WorkerDetailsService;
 import com.cos.jwt.service.WorkerService;
@@ -56,24 +57,29 @@ public class ManagerController {
 	public void workerdelete(@RequestBody Worker worker) {
 		workerService.workerdelete(worker);
 	}
-	int conter =0;
+	int conter =1;
 	RestTemplate restTemplate = new RestTemplate();
 	@PostMapping("/worker/listdetail")
 	@Scheduled(fixedRate = 2000)
-	public ResponseEntity<String> workerlistdetail() {
+	public String workerlistdetail() {
+		System.out.println("작업자상세 시작");
         String url = "http://localhost:5000/predict";
     	//HttpHeaders  HTTP 요청 또는 응답의 헤더 정보를 담는 클래스
     	HttpHeaders headers = new HttpHeaders();
     	//headers 객체의 Content-Type 헤더 값을 JSON 형식으로 설정
     	headers.setContentType(MediaType.APPLICATION_JSON);
-    	int no = conter++;
-    	List list = workerdeDetailsService.WorkerDetailList(no);
-    	HttpEntity<List> entity = new HttpEntity<>(list, headers);
     	
+    	int no = conter++;
+    	System.out.println("no"+no);
+    	List<WorkerDetails> list = workerdeDetailsService.WorkerDetailList(no);
+    	System.out.println("list"+list);
+    	HttpEntity<List<WorkerDetails>> entity = new HttpEntity<>(list, headers);
+    	System.out.println("entity"+entity);
     	// HTTP POST 요청을 보내고 응답을 받는 메서드(요청보낼 url,요청에 담을 데이터와 헤더를 담은 객체,요청에 담을 데이터와 헤더를 담은 객체)
     	String response = restTemplate.postForObject(url, entity, String.class);
+    	System.out.println("작업자상세 시작4");
     	System.out.println(response);
-    	return ResponseEntity.ok(response);
+    	return response;
     }
 	
 	
