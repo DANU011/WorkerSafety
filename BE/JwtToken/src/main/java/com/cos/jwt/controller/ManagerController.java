@@ -26,7 +26,7 @@ import com.cos.jwt.service.ManagerService;
 import com.cos.jwt.service.WorkerDetailsService;
 import com.cos.jwt.service.WorkerService;
 //@CrossOrigin(origins = "http://localhost:3000")
-@EnableScheduling
+//@EnableScheduling
 @RestController
 public class ManagerController {
 	@Autowired
@@ -68,7 +68,7 @@ public class ManagerController {
 	
 	RestTemplate restTemplate = new RestTemplate();
 	int counter = 1;
-	 @Scheduled(fixedRate = 2000)
+//	 @Scheduled(fixedRate = 2000)
 	@PostMapping("/worker/listdetail")
 	public ResponseEntity<?> workerlistdetail() {
 //		WorkerDeteilComponent workerDeteilComponent;

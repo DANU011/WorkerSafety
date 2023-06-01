@@ -59,9 +59,30 @@ const Map = ({ value }) => {
             console.error(error);
         }
         });
+    
+    api.post('/worker/listdetail', {},
+        {
+            headers: {
+            Authorization: `Bearer ${accessToken}`
+            }
+        }
+      )
+      .then((response) => {
+        const detailData = response.data;
+        console.log(detailData);
+      })
+      .catch((error) => {
+        console.error(error);
+        if (error.response.status === 403) {
+          window.location.href = '/';
+      } else {
+          console.error(error);
+      }
+      });
   }, [accessToken]);
 
   // console.log(workerData);
+
 
   useEffect(() => {
     if (workerData.length > 0) {
