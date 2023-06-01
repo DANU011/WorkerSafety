@@ -124,7 +124,7 @@ const RealtimeChart = () => {
     };
   }, []);
 
-  return <div id="chart" />;
+  return <div id="chart" style={{ width: '50%' }} />;
 };
 
 export default RealtimeChart;

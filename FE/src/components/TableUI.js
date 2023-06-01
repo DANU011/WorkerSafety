@@ -185,7 +185,7 @@ const TableUI = ({onValueChange}) => {
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [value, setValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [rows, setRows] = useState([]);
@@ -210,6 +210,11 @@ const TableUI = ({onValueChange}) => {
             1: '정상',
             2: '비정상',
             3: '정상',
+            4: '정상',
+            5: '정상',
+            6: '정상',
+            7: '비정상',
+            8: '정상',
           };
 
           const allrows = listdata.map((row)=>({
