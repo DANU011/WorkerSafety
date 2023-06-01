@@ -56,17 +56,17 @@ public class ManagerController {
 	public void workerdelete(@RequestBody Worker worker) {
 		workerService.workerdelete(worker);
 	}
-	
+	int conter =0;
 	RestTemplate restTemplate = new RestTemplate();
 	@PostMapping("/worker/listdetail")
 	@Scheduled(fixedRate = 2000)
-	public ResponseEntity<String> workerlistdetail(@RequestBody Integer no) {
+	public ResponseEntity<String> workerlistdetail() {
         String url = "http://localhost:5000/predict";
     	//HttpHeaders  HTTP 요청 또는 응답의 헤더 정보를 담는 클래스
     	HttpHeaders headers = new HttpHeaders();
     	//headers 객체의 Content-Type 헤더 값을 JSON 형식으로 설정
     	headers.setContentType(MediaType.APPLICATION_JSON);
-    	
+    	int no = conter++;
     	List list = workerdeDetailsService.WorkerDetailList(no);
     	HttpEntity<List> entity = new HttpEntity<>(list, headers);
     	
