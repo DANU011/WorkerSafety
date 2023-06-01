@@ -3,12 +3,14 @@ package com.cos.jwt.config.jwt;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,13 +24,17 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.cos.jwt.config.auth.PrincipalDetails;
 import com.cos.jwt.domain.Manager;
+import com.cos.jwt.domain.RefreshToken;
 import com.cos.jwt.repository.ManagerRepository;
+import com.cos.jwt.repository.RefreshTokenRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 //시큐리티가 filter가지고 있는데 그 필터중에 BasicAuthenticationfilter 라는 것이 있음.
 //권한이나 인증이 필요한 특정 주소를 요청했을 때 위 필터를 무조건 타게 되어있음.
 //만약에 권한이 인증이 필요한 주소가 아니라면 이 필터를 안탐
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+//	@Autowired
+//	private RefreshTokenRepository refreshTokenRepository;
 	
 	private ManagerRepository managerRepo;
 	
@@ -75,18 +81,19 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		                    new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
 		            SecurityContextHolder.getContext().setAuthentication(authentication);
 		
-		            // 다음 필터로 요청 전달
-//		            chain.doFilter(request, response);
+		            
 		        }
 		    } catch (IllegalArgumentException e) {
-		        logger.error("유효하지 않은 토큰");
-		        
+		        logger.error("유효하지 않은 토큰");		        
 		    } catch (TokenExpiredException e) {
 		        logger.warn("토큰 기한 만료");
 		     // Refresh Token 검증
-		        String refreshToken = request.getHeader("Refresh-Token");
-		    	String refreshedManagerid = JWT.require(Algorithm.HMAC512("jwt")).build().verify(refreshToken).getClaim("managerid").asString();
-
+		        String jwtrefreshToken = request.getHeader("Refreshtoken");
+		    	String refreshedManagerid = JWT.require(Algorithm.HMAC512("jwt")).build().verify(jwtrefreshToken).getClaim("managerid").asString();
+		    	
+//		    	Optional<RefreshToken> refreshToken = refreshTokenRepository.findById(refreshedManagerid);
+		    	
+//		    	if (refreshToken.get().getRefreshToken().equals(jwtrefreshToken)) {
 		    	if (refreshedManagerid != null) {
 		    		Manager managerEntity = managerRepo.findByManagerid(refreshedManagerid);
 
@@ -100,6 +107,16 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		    		// 새로운 Access Token 발급
 		    		String newAccessToken = JwtTokenProvider.generateAccessToken(principalDetails.getmanager());
 		    		response.addHeader("Authorization", "Bearer " + newAccessToken);
+		    		
+//					Map<String, String> responseMap = new HashMap<>();
+//					ObjectMapper objectMapper = new ObjectMapper();
+//					
+//					response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//					response.setContentType("application/json; charset=UTF-8");
+//			        responseMap.put("message", "access토큰재발급");
+//			        String json = objectMapper.writeValueAsString(responseMap);
+//			        response.getWriter().write(json);
+		    		
 		    	} else {
 		    		// Refresh Token 검증 실패 시 인증 처리 실패로 처리
 		    		SecurityContextHolder.clearContext();
@@ -109,8 +126,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		        logger.error("토큰 형식 오류.");
 		        
 		    }
-		    
-		    chain.doFilter(request, response);
+		    // 다음 필터로 요청 전달
+            chain.doFilter(request, response);
 		}
 			
 	

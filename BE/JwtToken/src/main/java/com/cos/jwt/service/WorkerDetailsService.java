@@ -14,8 +14,8 @@ public class WorkerDetailsService {
 	@Autowired
 	WorkerDetailsRepository workerDetailsRepo;
 	
-	public List<WorkerDetails> WorkerDetailList(Double no) {
-		List<WorkerDetails> workerDetails = workerDetailsRepo.findByNo(no);
+	public List<WorkerDetails> WorkerDetailList(int i) {
+		List<WorkerDetails> workerDetails = workerDetailsRepo.findByNo(i);
 		return workerDetails;
 	}
 }
