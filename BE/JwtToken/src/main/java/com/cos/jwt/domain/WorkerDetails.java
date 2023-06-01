@@ -1,7 +1,8 @@
 package com.cos.jwt.domain;
 
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,7 +13,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class WorkerDetails {
 	@Id
-	private Double no;
+	private Integer no;
 	@ManyToOne()
 	@JoinColumn(name = "userCode")
 	private Worker  userCode;
@@ -24,16 +25,12 @@ public class WorkerDetails {
 	private Double GyroZ;
 	private Double Lat;
 	private Double Lng;
-	private Timestamp Time;
-	
-	public WorkerDetails() {
-		
-	}
-	public Double getNo() {
+	private LocalTime Time;
+	public Integer getNo() {
 		return no;
 	}
-	public void setNo(Double no) {
-		no = no;
+	public void setNo(Integer no) {
+		this.no = no;
 	}
 	public Worker getUserCode() {
 		return userCode;
@@ -92,10 +89,10 @@ public class WorkerDetails {
 	public void setLng(Double lng) {
 		Lng = lng;
 	}
-	public Timestamp getTime() {
+	public LocalTime getTime() {
 		return Time;
 	}
-	public void setTime(Timestamp time) {
+	public void setTime(LocalTime time) {
 		Time = time;
 	}
 	

@@ -14,9 +14,7 @@ public class Worker {
 	private Integer age;
 	private String role;
 	
-	public Worker() {
-		
-	}
+
 	public Double getUserCode() {
 		return userCode;
 	}

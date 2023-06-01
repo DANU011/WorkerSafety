@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cos.jwt.domain.WorkerDetails;
 
-public interface WorkerDetailsRepository extends JpaRepository<WorkerDetails, Double> {
-	public List<WorkerDetails> findByNo(Double no);
+public interface WorkerDetailsRepository extends JpaRepository<WorkerDetails, Integer> {
+	public List<WorkerDetails> findByNo(Integer no);
+	//List<WorkerDetails> findAllByOrderByTime(LocalTime time);
 }
