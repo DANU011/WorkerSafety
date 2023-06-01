@@ -49,7 +49,11 @@ const LineChart = ({linedata}) => {
     };
   }, [linedata]);
 
-  return <div ref={chartRef} />;
+  return (
+    <div className="linechart-container" style={{ width: '50%' }}>
+      <div ref={chartRef} />
+    </div>
+  );
 };
 
 export default LineChart;
