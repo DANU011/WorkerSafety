@@ -7,11 +7,13 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.cos.jwt.domain.Manager;
 
 public class JwtTokenProvider {
+	
+	
     // Access Token과 Refresh Token을 발급할 때 사용할 시크릿 키
     //private static final String SECRET_KEY = "yourSecretKey";
 
     // Access Token의 유효시간 (30분)
-    private static final long ACCESS_TOKEN_EXPIRATION_MS = 30 * 60 * 1000;
+    private static final long ACCESS_TOKEN_EXPIRATION_MS = 10 * 60 * 1000;
 
     // Refresh Token의 유효시간 (7일)
     private static final long REFRESH_TOKEN_EXPIRATION_MS = 7 * 24 * 60 * 60 * 1000;
@@ -23,6 +25,10 @@ public class JwtTokenProvider {
 
     // Refresh Token 생성
     public static String generateRefreshToken(Manager manager) {
+//    	RefreshToken refreshToken =  new RefreshToken();;
+//    	refreshToken.setId(manager.getManagerid());
+//    	refreshToken.setRefreshToken(generateToken(manager, REFRESH_TOKEN_EXPIRATION_MS));
+//    	refreshTokenRepository.save(refreshToken);
         return generateToken(manager, REFRESH_TOKEN_EXPIRATION_MS);
     }
 
