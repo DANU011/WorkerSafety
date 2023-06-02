@@ -1,7 +1,8 @@
 package com.cos.jwt.controller;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -68,7 +69,7 @@ public class ManagerController {
 	
 	RestTemplate restTemplate = new RestTemplate();
 	int counter = 1;
-	 @Scheduled(fixedRate = 2000)
+	@Scheduled(fixedRate = 2000)
 	@PostMapping("/worker/listdetail")
 	public ResponseEntity<?> workerlistdetail() {
 //		WorkerDeteilComponent workerDeteilComponent;
@@ -85,8 +86,10 @@ public class ManagerController {
     	// HTTP POST 요청을 보내고 응답을 받는 메서드(요청보낼 url,요청에 담을 데이터와 헤더를 담은 객체,요청에 담을 데이터와 헤더를 담은 객체)
     	String response = restTemplate.postForObject(url, entity, String.class);
     	System.out.println(response);
-    	
-    	return ResponseEntity.ok(list+response);
+    	Map<String, Object> data = new HashMap<>();
+    	data.put("list", list);
+    	data.put("response", response);
+    	return ResponseEntity.ok(data);
     }
 	
 	
