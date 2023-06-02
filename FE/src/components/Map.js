@@ -160,7 +160,7 @@ const Map = ({ value }) => {
       if (markers.some(marker => marker.getIcon().content.includes('red'))) {
         alert('위험 작업자가 있습니다!');
       }
-    }, 3000);
+    }, 5000);
   
     return () => {
       clearTimeout(timeoutId);
