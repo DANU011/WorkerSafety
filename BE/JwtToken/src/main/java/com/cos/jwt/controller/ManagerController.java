@@ -1,7 +1,8 @@
 package com.cos.jwt.controller;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -10,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.scheduling.config.CronTask;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,12 +27,13 @@ import com.cos.jwt.domain.Manager;
 import com.cos.jwt.domain.Worker;
 import com.cos.jwt.domain.WorkerDetails;
 import com.cos.jwt.service.ManagerService;
+import com.cos.jwt.service.SchedulerService;
 import com.cos.jwt.service.WorkerDetailsService;
 import com.cos.jwt.service.WorkerService;
 //@CrossOrigin(origins = "http://localhost:3000")
-//@EnableScheduling
+@EnableScheduling
 @RestController
-public class ManagerController {
+public class ManagerController   {
 	@Autowired
 	ManagerService managerService;
 	
@@ -38,8 +43,8 @@ public class ManagerController {
 	@Autowired
 	WorkerDetailsService workerdeDetailsService;
 	
-//	@Autowired
-//	WorkerDeteilComponent workerDeteilComponent;
+	@Autowired
+	SchedulerService schedulerService;
 	
 	
 	@PostMapping("/user/join")
@@ -68,11 +73,16 @@ public class ManagerController {
 	
 	RestTemplate restTemplate = new RestTemplate();
 	int counter = 1;
-//	 @Scheduled(fixedRate = 2000)
+	
+	private volatile boolean scheduled = false;
+	@Scheduled(fixedRate = 2000)
 	@PostMapping("/worker/listdetail")
 	public ResponseEntity<?> workerlistdetail() {
-//		WorkerDeteilComponent workerDeteilComponent;
-//		workerDeteilComponent.sendWorkerListDetail();	
+		//scheduled = true;
+//		schedulerService.startWorkerListDetail();
+//		Map<String, Object> data = schedulerService.getSavedData();	
+//		return ResponseEntity.ok(data);
+		if (scheduled) {
         String url = "http://localhost:5000/predict";
     	//HttpHeaders  HTTP 요청 또는 응답의 헤더 정보를 담는 클래스
     	HttpHeaders headers = new HttpHeaders();
@@ -85,11 +95,41 @@ public class ManagerController {
     	// HTTP POST 요청을 보내고 응답을 받는 메서드(요청보낼 url,요청에 담을 데이터와 헤더를 담은 객체,요청에 담을 데이터와 헤더를 담은 객체)
     	String response = restTemplate.postForObject(url, entity, String.class);
     	System.out.println(response);
-    	
-    	return ResponseEntity.ok(list+response);
+    	// 응답 및 리스트 데이터를 Map에 담기
+    	Map<String, Object> data = new HashMap<>();
+    	data.put("list", list);
+    	data.put("response", response);
+    	// ResponseEntity를 반환하여 응답 데이터 전달
+    	return ResponseEntity.ok(data);
+		}
+		return null;
+			
     }
 	
-	
+//	@Override
+//	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+//		taskRegistrar.addCronTask(new CronTask(this::scheduledWorkerlistdetail, "*/2 * * * * *"));
+//		
+//	}
+//	@Scheduled(fixedRate = 2000)
+//	public void scheduledWorkerlistdetail() {
+//	        if (scheduled) {
+//	            workerlistdetail();
+//	        }
+//	    }
+//
+	    @PostMapping("/worker/start")
+	    public ResponseEntity<?> startScheduledTask() {
+	        scheduled = true;
+	        return ResponseEntity.ok().build();
+	    }
+
+	    @PostMapping("/worker/stop")
+	    public ResponseEntity<?> stopScheduledTask() {
+	        scheduled = false;
+	        return ResponseEntity.ok().build();
+	    }
+//	
 //	@GetMapping("/refresh")
 //    public ResponseEntity<Map<String, String>> refreshAccessToken(@RequestParam("refreshToken") String refreshToken) {
 //        try {
@@ -134,5 +174,6 @@ public class ManagerController {
 		status.setComplete();
 		
 	}
+	
 	
 }
