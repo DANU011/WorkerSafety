@@ -27,7 +27,7 @@ const LineChart = ({linedata}) => {
         curve: 'straight'
       },
       title: {
-        text: 'Product Trends by Month',
+        text: 'Line Chart',
         align: 'left'
       },
       grid: {

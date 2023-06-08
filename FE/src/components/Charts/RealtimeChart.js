@@ -26,7 +26,7 @@ const RealtimeChart = () => {
       }
     }
 
-    getDayWiseTimeSeries(new Date("11 Feb 2017 GMT").getTime(), 10, {
+    getDayWiseTimeSeries(new Date("11 may 2023 GMT").getTime(), 10, {
       min: 10,
       max: 90
     });
@@ -64,7 +64,7 @@ const RealtimeChart = () => {
           enabled: true,
           easing: "linear",
           dynamicAnimation: {
-            speed: 1000
+            speed: 1500
           }
         },
         toolbar: {
