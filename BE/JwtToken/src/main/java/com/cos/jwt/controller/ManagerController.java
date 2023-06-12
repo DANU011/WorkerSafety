@@ -121,7 +121,7 @@ public class ManagerController   {
 	    @PostMapping("/worker/start")
 	    public ResponseEntity<?> startScheduledTask() {
 	        scheduled = true;
-	        return ResponseEntity.ok().build();
+	        return ResponseEntity.ok("성공");
 	    }
 
 	    @PostMapping("/worker/stop")
