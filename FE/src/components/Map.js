@@ -10,6 +10,7 @@ const Map = ({ value }) => {
   const [isInfoDataVisible, setIsInfoDataVisible] = useState(true);
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [workerData, setWorkerData] = useState([]);
+  const [detailData, setDetailData] = useState(null);
 
   const mapRef = useRef(null);
 
@@ -58,6 +59,12 @@ const Map = ({ value }) => {
       });
   }, [accessToken]);
 
+  const handledetailData = (value) => {
+    setDetailData(value);
+  };
+
+  console.log(detailData);
+
   useEffect(() => {
     if (workerData.length > 0) {
       const locations = workerData.map((item, index) => ({
@@ -68,6 +75,7 @@ const Map = ({ value }) => {
             data={data[index]}
             linedata={linedata[index]}
             workerData={item}
+            detail={handledetailData}
             // detailData={detailData.list[0].userCode.userCode === index + 1 ? detailData : null}
           />
         ),

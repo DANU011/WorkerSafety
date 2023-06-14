@@ -4,7 +4,7 @@ import RealtimeChart from '../Charts/RealtimeChart';
 import api from '../../service/api';
 import '../../style/components/InfoData.css';
 
-const InfoData = ({ data, linedata, workerData }) => {
+const InfoData = ({ data, linedata, workerData, detail }) => {
   const [detailData, setDetailData] = useState([]);
 
   const accessToken = sessionStorage.getItem('accessToken');
@@ -59,12 +59,21 @@ const InfoData = ({ data, linedata, workerData }) => {
 
   console.log(detailData);
 
+  useEffect(() => {
+    const mapData = () => {
+      const data = detailData;
+      detail(data);
+    };
+
+    mapData();
+  }, [detailData])
+
   return (
     <div className="infoData">
       <div className='data'>
         <p>작업자코드:&nbsp;{workerData.userCode}&nbsp; 이름:&nbsp;{workerData.name}&nbsp; 성별:&nbsp;{workerData.gender}&nbsp; 나이:&nbsp;{workerData.age}&nbsp; 직위:&nbsp;{workerData.role}&nbsp;</p>
         {detailData.list && detailData.list.length > 0 && detailData.list[0].userCode.userCode === workerData.userCode && (
-          <p>{detailData.response.prediction[0]}</p>
+          <p className={detailData.response.prediction[0] === 'fall' ? 'fall' : 'normal'}>{detailData.response.prediction[0]}</p>
         )}
       </div>
       <div className='charts'>
