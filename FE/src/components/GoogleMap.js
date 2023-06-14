@@ -3,7 +3,7 @@ import InfoData from '../components/Data/InfoData';
 import api from '../service/api';
 import '../style/components/Map.css';
 
-const Map = ({ value }) => {
+const GoogleMap = ({ value }) => {
   const [map, setMap] = useState(null);
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(0);
   const [markers, setMarkers] = useState([]);
@@ -38,56 +38,54 @@ const Map = ({ value }) => {
 
   const accessToken = sessionStorage.getItem('accessToken');
 
-  useEffect(() => {
-    api.get('/worker/list', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+  useEffect(()=> {
+    api.get('/worker/list', 
+          {
+              headers: {
+              Authorization: `Bearer ${accessToken}`
+              }
+          }
+        )
+        .then((response) => {
+          const workerData = response.data;
+          console.log(workerData);
+          setWorkerData(workerData);
+        })
+        .catch((error) => {
+          console.error(error);
+          if (error.response.status === 403) {
+            window.location.href = '/';
+        } else {
+            console.error(error);
+        }
+        });
+
+    api.post('/worker/start', {},
+        {
+            headers: {
+            Authorization: `Bearer ${accessToken}`
+            }
+        }
+      )
       .then((response) => {
-        const workerData = response.data;
-        console.log(workerData);
-        setWorkerData(workerData);
+        console.log(response.data)
       })
       .catch((error) => {
         console.error(error);
         if (error.response.status === 403) {
           window.location.href = '/';
-        } else {
+      } else {
           console.error(error);
-        }
-      });
-
-    api.post(
-      '/worker/start',
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
       }
-    )
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-        if (error.response.status === 403) {
-          window.location.href = '/';
-        } else {
-          console.error(error);
-        }
       });
-
-    api.post(
-      '/worker/listdetail',
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    )
+    
+    api.post('/worker/listdetail', {},
+        {
+            headers: {
+            Authorization: `Bearer ${accessToken}`
+            }
+        }
+      )
       .then((response) => {
         const detailData = response.data;
         console.log(detailData);
@@ -97,41 +95,49 @@ const Map = ({ value }) => {
         console.error(error);
         if (error.response.status === 403) {
           window.location.href = '/';
-        } else {
+      } else {
           console.error(error);
-        }
+      }
       });
   }, [accessToken]);
 
+  // console.log(workerData);
+
   useEffect(() => {
-    if (workerData.length > 0 && detailData.list) {
-      const locations = workerData.map((item, index) => ({
-        lat: 35.23589 + index * 0.0005,
-        lng: 129.07694 + index * 0.0005,
-        component: (
-          <InfoData
-            data={data[index]}
-            linedata={linedata[index]}
-            workerData={item}
-            detailData={detailData.list[0].userCode.userCode === index + 1 ? detailData : null}
-          />
-        ),
-      }));
+    if (workerData.length > 0) {
+        const locations = workerData.map((item, index) => ({
+          lat: 35.23589 + index * 0.0005,
+          lng: 129.07694 + index * 0.0005,
+          component: (
+            <InfoData
+              data={data[index]}
+              linedata={linedata[index]}
+              workerData={item}
+              detailData={detailData.list[0].userCode.userCode === (index + 1) ? detailData : null}
+            />
+          ),
+        }));
       const intervalDuration = 700;
       const script = document.createElement('script');
-      script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.REACT_APP_NAVER_MAPS_CLIENT_ID}&submodules=geocoder`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_CLIENT_ID}&libraries=geometry`;
       script.async = true;
       script.onload = () => {
-        const { naver } = window;
+        const google = window.google;
         const mapOptions = {
-          center: new naver.maps.LatLng(locations[0].lat, locations[0].lng),
+          center: new google.maps.LatLng(
+            locations[0].lat,
+            locations[0].lng
+          ),
           zoom: 17,
           zoomControl: true,
           zoomControlOptions: {
-            position: naver.maps.Position.TOP_RIGHT,
+            position: google.maps.ControlPosition.TOP_RIGHT,
           },
         };
-        const mapInstance = new naver.maps.Map(mapRef.current, mapOptions);
+        const mapInstance = new google.maps.Map(
+          mapRef.current,
+          mapOptions
+        );
         setMap(mapInstance);
 
         const selectedLocation = locations[selectedMarkerIndex];
@@ -139,14 +145,23 @@ const Map = ({ value }) => {
         setIsInfoDataVisible(true);
 
         const markers = locations.map((location, index) => {
-          const markerColor = location.component.props.data.text === '비정상' ? 'red' : 'black';
-          const marker = new naver.maps.Marker({
-            position: new naver.maps.LatLng(location.lat, location.lng),
+          const markerColor =
+            location.component.props.data.text === '비정상'
+              ? 'red'
+              : 'black';
+          const marker = new google.maps.Marker({
+            position: new google.maps.LatLng(
+              location.lat,
+              location.lng
+            ),
             map: mapInstance,
             icon: {
-              content: `<div class='marker' style='color: ${markerColor};'><div class='marker-number'>${value[index]}</div></div>`,
-              size: new naver.maps.Size(30, 40),
-              anchor: new naver.maps.Point(15, 40),
+              path: google.maps.SymbolPath.CIRCLE,
+              fillColor: markerColor,
+              fillOpacity: 1,
+              strokeColor: '#fff',
+              strokeWeight: 1,
+              scale: 7,
             },
           });
           marker.addListener('click', () => {
@@ -162,9 +177,13 @@ const Map = ({ value }) => {
         setInterval(() => {
           markers.forEach((marker, index) => {
             const position = marker.getPosition();
-            const newPosition = new naver.maps.LatLng(
-              position.lat() + Math.random() * 0.0003 - 0.0001,
-              position.lng() + Math.random() * 0.0003 - 0.0001
+            const newPosition = new google.maps.LatLng(
+              position.lat() +
+                Math.random() * 0.0003 -
+                0.0001,
+              position.lng() +
+                Math.random() * 0.0003 -
+                0.0001
             );
             marker.setPosition(newPosition);
           });
@@ -173,11 +192,11 @@ const Map = ({ value }) => {
 
       document.head.appendChild(script);
     }
-  }, [workerData, detailData]);
+  }, [workerData]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (markers.some((marker) => marker.getIcon().content.includes('red'))) {
+      if (markers.some((marker) => marker.getIcon().fillColor === 'red')) {
         alert('위험 작업자가 있습니다!');
       }
     }, 5000);
@@ -204,4 +223,4 @@ const Map = ({ value }) => {
   );
 };
 
-export default Map;
+export default GoogleMap;

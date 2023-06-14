@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Map from '../components/Map';
+import GoogleMap from '../components/GoogleMap';
 import TableUI from '../components/TableUI';
 import DashboardHeader from '../components/DashboardHeader';
 import '../style/pages/Dashboard.css';
