@@ -87,8 +87,13 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		        logger.error("유효하지 않은 토큰");		        
 		    } catch (TokenExpiredException e) {
 		        logger.warn("토큰 기한 만료");
+		        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		        response.getWriter().write("Access 토큰 만료");
 		     // Refresh Token 검증
 		        String jwtrefreshToken = request.getHeader("Refreshtoken");
+//		        if (jwtrefreshToken ==null) {
+//		        	
+//		        }
 		    	String refreshedManagerid = JWT.require(Algorithm.HMAC512("jwt")).build().verify(jwtrefreshToken).getClaim("managerid").asString();
 		    	
 //		    	Optional<RefreshToken> refreshToken = refreshTokenRepository.findById(refreshedManagerid);
