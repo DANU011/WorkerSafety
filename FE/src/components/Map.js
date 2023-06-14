@@ -10,7 +10,6 @@ const Map = ({ value }) => {
   const [isInfoDataVisible, setIsInfoDataVisible] = useState(true);
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [workerData, setWorkerData] = useState([]);
-  const [detailData, setDetailData] = useState([]);
 
   const mapRef = useRef(null);
 
@@ -57,54 +56,10 @@ const Map = ({ value }) => {
           console.error(error);
         }
       });
-
-    api.post(
-      '/worker/start',
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    )
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-        if (error.response.status === 403) {
-          window.location.href = '/';
-        } else {
-          console.error(error);
-        }
-      });
-
-    api.post(
-      '/worker/listdetail',
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    )
-      .then((response) => {
-        const detailData = response.data;
-        console.log(detailData);
-        setDetailData(detailData);
-      })
-      .catch((error) => {
-        console.error(error);
-        if (error.response.status === 403) {
-          window.location.href = '/';
-        } else {
-          console.error(error);
-        }
-      });
   }, [accessToken]);
 
   useEffect(() => {
-    if (workerData.length > 0 && detailData.list) {
+    if (workerData.length > 0) {
       const locations = workerData.map((item, index) => ({
         lat: 35.23589 + index * 0.0005,
         lng: 129.07694 + index * 0.0005,
@@ -113,7 +68,7 @@ const Map = ({ value }) => {
             data={data[index]}
             linedata={linedata[index]}
             workerData={item}
-            detailData={detailData.list[0].userCode.userCode === index + 1 ? detailData : null}
+            // detailData={detailData.list[0].userCode.userCode === index + 1 ? detailData : null}
           />
         ),
       }));
@@ -173,7 +128,7 @@ const Map = ({ value }) => {
 
       document.head.appendChild(script);
     }
-  }, [workerData, detailData]);
+  }, [workerData]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
