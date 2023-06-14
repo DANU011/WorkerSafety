@@ -10,6 +10,7 @@ const Map = ({ value }) => {
   const [isInfoDataVisible, setIsInfoDataVisible] = useState(true);
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [workerData, setWorkerData] = useState([]);
+  const [detailData, setDetailData] = useState([]);
 
   const mapRef = useRef(null);
 
@@ -48,7 +49,7 @@ const Map = ({ value }) => {
         )
         .then((response) => {
           const workerData = response.data;
-          // console.log(workerData);
+          console.log(workerData);
           setWorkerData(workerData);
         })
         .catch((error) => {
@@ -59,6 +60,25 @@ const Map = ({ value }) => {
             console.error(error);
         }
         });
+
+    api.post('/worker/start', {},
+        {
+            headers: {
+            Authorization: `Bearer ${accessToken}`
+            }
+        }
+      )
+      .then((response) => {
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error(error);
+        if (error.response.status === 403) {
+          window.location.href = '/';
+      } else {
+          console.error(error);
+      }
+      });
     
     api.post('/worker/listdetail', {},
         {
@@ -68,8 +88,11 @@ const Map = ({ value }) => {
         }
       )
       .then((response) => {
-        const detailData = response.data;
+        const detailData = response.data.list[0];
+        const prediction = response.data.response;
         console.log(detailData);
+        console.log(prediction);
+        setDetailData(detailData);
       })
       .catch((error) => {
         console.error(error);
@@ -82,18 +105,19 @@ const Map = ({ value }) => {
   }, [accessToken]);
 
   // console.log(workerData);
-
+  
 
   useEffect(() => {
     if (workerData.length > 0) {
-      const locations = data.map((item, index) => ({
+      const locations = workerData.map((item, index) => ({
         lat: 35.23589 + index * 0.0005,
         lng: 129.07694 + index * 0.0005,
         component: (
           <InfoData
-            data={item}
+            data={data[index]}
             linedata={linedata[index]}
-            workerData={workerData[index]}
+            workerData={item}
+            detailData={detailData.userCode.userCode === (index + 1) ? detailData : null}
           />
         ),
       }));
