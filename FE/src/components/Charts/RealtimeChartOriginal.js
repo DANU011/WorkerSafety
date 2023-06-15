@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ApexCharts from "apexcharts";
 
-const RealtimeChart = () => {
+const RealtimeChartOriginal = () => {
   const [chart, setChart] = useState(null);
 
   useEffect(() => {
@@ -127,4 +127,4 @@ const RealtimeChart = () => {
   return <div id="chart" style={{ width: '50%' }} />;
 };
 
-export default RealtimeChart;
+export default RealtimeChartOriginal;

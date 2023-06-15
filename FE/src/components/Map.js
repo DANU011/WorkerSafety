@@ -63,7 +63,7 @@ const Map = ({ value }) => {
     setDetailData(value);
   };
 
-  console.log(detailData);
+  // console.log(detailData);
 
   useEffect(() => {
     if (workerData.length > 0) {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import LineChart from '../Charts/LineChart';
-import RealtimeChart from '../Charts/RealtimeChart';
+import RealtimeChartTemp from '../Charts/RealtimeChartTemp';
+import RealtimeChartHeart from '../Charts/RealtimeChartHeart';
 import api from '../../service/api';
 import '../../style/components/InfoData.css';
 
@@ -57,7 +57,7 @@ const InfoData = ({ data, linedata, workerData, detail }) => {
     };
   }, [accessToken]);
 
-  console.log(detailData);
+  // console.log(detailData);
 
   useEffect(() => {
     const mapData = () => {
@@ -77,8 +77,9 @@ const InfoData = ({ data, linedata, workerData, detail }) => {
         )}
       </div>
       <div className='charts'>
-        <LineChart linedata={linedata} />
-        <RealtimeChart />
+        {/* <LineChart linedata={linedata} /> */}
+        {/* <RealtimeChartHeart workerData={workerData} detailData={detailData}/> */}
+        <RealtimeChartTemp workerData={workerData} detailData={detailData}/>
       </div>
     </div>
   );
