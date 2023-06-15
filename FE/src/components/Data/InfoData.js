@@ -57,7 +57,7 @@ const InfoData = ({ data, linedata, workerData, detail }) => {
     };
   }, [accessToken]);
 
-  // console.log(detailData);
+  console.log(detailData);
 
   useEffect(() => {
     const mapData = () => {

@@ -22,7 +22,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 // import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import TextField from '@mui/material/TextField';
-// import AddIcon from '@mui/icons-material/Add';
+import AddIcon from '@mui/icons-material/Add';
 import api from '../service/api';
 
 const descendingComparator = (a, b, orderBy) => {
@@ -131,7 +131,7 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected, handleDelete } = props;
+  const { numSelected, handleDelete, handleInsert } = props;
 
   return (
     <Toolbar
@@ -170,7 +170,13 @@ const EnhancedTableToolbar = (props) => {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-      ) : null}
+      ) : (
+        <Tooltip title="Add">
+          <IconButton onClick={handleInsert}>
+            <AddIcon />
+          </IconButton>
+        </Tooltip>
+      )}
     </Toolbar>
   );
 }
@@ -190,6 +196,7 @@ const TableUI = ({onValueChange}) => {
   const [searchValue, setSearchValue] = useState('');
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [insertValue, setInsertValue] = useState('');
 
   const accessToken = sessionStorage.getItem('accessToken');
   // console.log(accessToken);
@@ -286,6 +293,25 @@ const TableUI = ({onValueChange}) => {
     const updatedRows = rows.filter((row) => !selected.includes(row.userCode));
     setRows(updatedRows);
     setSelected([]);
+
+    // 서버에 삭제 요청 보내기
+    selected.forEach((userCode) => {
+      api.delete('/worker/delete', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          userCode: parseFloat(userCode),
+        },
+      })
+      .then((response) => {
+        console.log('삭제 요청 성공:', response);
+      })
+      .catch((error) => {
+        console.error('삭제 요청 실패:', error);
+      });
+    });
+
     onValueChange(updatedRows);
   };
 
@@ -293,22 +319,41 @@ const TableUI = ({onValueChange}) => {
   //   setValue(event.target.value);
   // };
 
+  const handleInputChange = (event) => {
+    setInsertValue(event.target.value);
+  };
+
   const handleInputSearchChange = (event) => {
     setSearchValue(event.target.value);
   }
 
-  // const handleInsert = () => {
-  //   if (!value) {
-  //     return;
-  //   }
+  const handleInsert = () => {
+    if (!insertValue) {
+      return;
+    }
+  
+    const [userCode, name, gender, age, role] = insertValue.split(',');
+    const newRow = { userCode, name };
+    const updatedRows = [...rows, newRow];
+    setRows(updatedRows);
+    setInsertValue('');
+    const newdata = { userCode, name, gender, age, role };
 
-  //   const [name, calories, fat] = value.split(',')
-  //   const newRow = createData(name, parseInt(calories), parseFloat(fat));
-  //   const updatedRows = [...rows, newRow];
-  //   setRows(updatedRows);
-  //   setValue('');
-  //   setSelected([]);
-  // };
+    // 서버에 추가 요청 보내기
+    api.put('/worker/add', newdata, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+    .then((response) => {
+      console.log('추가 요청 성공:', response);
+    })
+    .catch((error) => {
+      console.error('추가 요청 실패:', error);
+    });
+
+    setSelected([]);
+  };
 
   const isSelected = (userCode) => selected.indexOf(userCode) !== -1;
 
@@ -343,7 +388,7 @@ const TableUI = ({onValueChange}) => {
   return (
     <Box sx={{ width: '100%' }}>
         <Paper sx={{ width: '100%', mb: 2 }}>
-            <EnhancedTableToolbar numSelected={selected.length} handleDelete={handleDelete} />
+            <EnhancedTableToolbar numSelected={selected.length} handleDelete={handleDelete} handleInsert={handleInsert} />
             <TableContainer component={Box} sx={{backgroundColor : '#FDF5E6'}}>
             <Table
                 sx={{ minWidth: 550 }}
@@ -431,6 +476,14 @@ const TableUI = ({onValueChange}) => {
           placeholder="검색"
           value={searchValue}
           onChange={handleInputSearchChange}
+          color='warning'
+          sx={{ marginRight: '10px' }}
+        />
+        <TextField
+          label="Add"
+          placeholder="추가"
+          value={insertValue}
+          onChange={handleInputChange}
           color='warning'
         />
     </Box>
