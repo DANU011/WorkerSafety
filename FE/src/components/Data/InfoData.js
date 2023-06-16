@@ -80,6 +80,9 @@ const InfoData = ({ data, linedata, workerData, detail }) => {
         {/* <LineChart linedata={linedata} /> */}
         {/* <RealtimeChartHeart workerData={workerData} detailData={detailData}/> */}
         <RealtimeChartTemp workerData={workerData} detailData={detailData}/>
+        {detailData.list && detailData.list.length > 0 && detailData.list[0].userCode.userCode === workerData.userCode && (
+          <p className='detail'>맥박:&nbsp;{detailData.list[0].heartbeat}&nbsp; 체온:&nbsp;{detailData.list[0].temperature}</p>
+        )}
       </div>
     </div>
   );

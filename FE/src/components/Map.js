@@ -5,7 +5,7 @@ import '../style/components/Map.css';
 
 const Map = ({ value }) => {
   const [map, setMap] = useState(null);
-  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(0);
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(7);
   const [markers, setMarkers] = useState([]);
   const [isInfoDataVisible, setIsInfoDataVisible] = useState(true);
   const [selectedComponent, setSelectedComponent] = useState(null);
