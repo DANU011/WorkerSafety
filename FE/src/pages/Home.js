@@ -8,10 +8,10 @@ import Register from './Register';
 import '../style/pages/Home.css';
 
 const CustomButton = styled(Button)({
-  backgroundColor: '#e9531d',
+  backgroundColor: '#D14D72',
   color: 'white',
   '&:hover': {
-    backgroundColor: '#FF7F50',
+    backgroundColor: '#BE5A83',
   },
 });
 
@@ -33,7 +33,7 @@ const Home = () => {
         <>
           <LoginForm onLoginSuccess={handleLoginSuccess} />
           <div className='register-box'>
-            <CustomButton component={Link} to="/register" variant="contained">관리자 등록</CustomButton>
+            <CustomButton component={Link} to="/register" variant="contained">&nbsp;관리자 등록&nbsp;</CustomButton>
           </div>
         </>
       ) : null} />

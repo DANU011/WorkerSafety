@@ -20,10 +20,12 @@
 
 .fall {
     color: red;
+    font-weight: bold;
 }
 
 .normal {
     color: black;
+    font-weight: bold;
 }
 
 .detail {

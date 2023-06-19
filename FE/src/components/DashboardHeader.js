@@ -57,7 +57,7 @@ const DashboardHeader = ({loginInfo}) => {
                     aria-haspopup="true"
                     aria-expanded={open ? 'true' : undefined}
                 >
-                    <Avatar sx={{ width: 70, height: 70, background: '#FDF5E6', color: 'rgb(245, 131, 65)' }}>{loginInfo.name}</Avatar>
+                    <Avatar sx={{ width: 70, height: 70, background: '#FFD9D4', color: '#D14D72' }}>{loginInfo.name}</Avatar>
                 </IconButton>
             </Box>
             <Menu

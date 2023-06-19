@@ -7,11 +7,11 @@ import '../style/pages/Register.css';
 
 const CustomTextField = styled(TextField)({
   '& .MuiInputLabel-root.Mui-focused': {
-    color: '#FF7F50',
+    color: '#D14D72',
   },
   '& .MuiOutlinedInput-root': {
     '&.Mui-focused fieldset': {
-      borderColor: '#FF7F50',
+      borderColor: '#D14D72',
     },
   },
 });
@@ -61,7 +61,7 @@ const Register = () => {
           required
           sx={{ marginTop: '20px' }}
         />
-        <Button type="submit" variant="contained" size="small" sx={{ backgroundColor: '#e9531d', marginTop: '30px', color: 'white', '&:hover': { backgroundColor: '#FF7F50' } }}>관리자 등록</Button>
+        <Button type="submit" variant="contained" size="small" sx={{ backgroundColor: '#D14D72', marginTop: '30px', color: 'white', '&:hover': { backgroundColor: '#BE5A83' } }}>관리자 등록</Button>
       </form>
     </div>
   );

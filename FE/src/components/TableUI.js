@@ -16,10 +16,7 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
-// import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import TextField from '@mui/material/TextField';
 import AddIcon from '@mui/icons-material/Add';
@@ -389,7 +386,7 @@ const TableUI = ({onValueChange}) => {
     <Box sx={{ width: '100%' }}>
         <Paper sx={{ width: '100%', mb: 2 }}>
             <EnhancedTableToolbar numSelected={selected.length} handleDelete={handleDelete} handleInsert={handleInsert} />
-            <TableContainer component={Box} sx={{backgroundColor : '#FDF5E6'}}>
+            <TableContainer component={Box} sx={{backgroundColor : '#FFD9D4'}}>
             <Table
                 sx={{ minWidth: 550 }}
                 aria-labelledby="tableTitle"
@@ -439,7 +436,7 @@ const TableUI = ({onValueChange}) => {
                         {row.userCode}
                         </TableCell>
                         <TableCell align="center" sx={{ width: '30%' }}>{row.name}</TableCell>
-                        <TableCell align="center" sx={{ width: '30%' }} style={{ color: row.state === '비정상' ? 'red' : 'black' }}>{row.state}</TableCell>
+                        <TableCell align="center" sx={{ width: '30%' }} style={{ color: row.state === '비정상' ? 'red' : 'black', fontWeight: row.state === '비정상' ? 'bold' : 'normal' }}>{row.state}</TableCell>
                     </TableRow>
                     );
                 })}
@@ -464,7 +461,7 @@ const TableUI = ({onValueChange}) => {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
             labelRowsPerPage="페이지당 인원"
-            sx={{bgcolor : '#FDF5E6'}}
+            sx={{bgcolor : '#FFD9D4'}}
             />
         </Paper>
         {/* <FormControlLabel
@@ -476,7 +473,7 @@ const TableUI = ({onValueChange}) => {
           placeholder="검색"
           value={searchValue}
           onChange={handleInputSearchChange}
-          color='warning'
+          color='secondary'
           sx={{ marginRight: '10px' }}
         />
         <TextField
@@ -484,7 +481,7 @@ const TableUI = ({onValueChange}) => {
           placeholder="추가"
           value={insertValue}
           onChange={handleInputChange}
-          color='warning'
+          color='secondary'
         />
     </Box>
   );

@@ -25,17 +25,6 @@ const Map = ({ value }) => {
     { id: 8, text: '정상' },
   ];
 
-  const linedata = [
-    { data: [10, 41, 35, 51, 49, 62, 69, 91, 148] },
-    { data: [20, 50, 60, 51, 70, 62, 50, 40, 100] },
-    { data: [10, 30, 40, 51, 20, 62, 80, 70, 127] },
-    { data: [30, 50, 70, 51, 40, 62, 80, 80, 110] },
-    { data: [10, 30, 40, 51, 60, 62, 20, 70, 127] },
-    { data: [30, 40, 60, 51, 30, 62, 80, 30, 150] },
-    { data: [20, 30, 40, 51, 20, 62, 30, 70, 127] },
-    { data: [10, 40, 20, 51, 30, 62, 40, 20, 133] },
-  ];
-
   const accessToken = sessionStorage.getItem('accessToken');
 
   useEffect(() => {
@@ -68,12 +57,11 @@ const Map = ({ value }) => {
   useEffect(() => {
     if (workerData.length > 0) {
       const locations = workerData.map((item, index) => ({
-        lat: 35.23589 + index * 0.0005,
-        lng: 129.07694 + index * 0.0005,
+        lat: 35.23589 + index * 0.00005,
+        lng: 129.07694 + index * 0.00005,
         component: (
           <InfoData
             data={data[index]}
-            linedata={linedata[index]}
             workerData={item}
             detail={handledetailData}
             // detailData={detailData.list[0].userCode.userCode === index + 1 ? detailData : null}
@@ -126,8 +114,8 @@ const Map = ({ value }) => {
           markers.forEach((marker, index) => {
             const position = marker.getPosition();
             const newPosition = new naver.maps.LatLng(
-              position.lat() + Math.random() * 0.0003 - 0.0001,
-              position.lng() + Math.random() * 0.0003 - 0.0001
+              position.lat() + Math.random() * 0.0002 - 0.0001,
+              position.lng() + Math.random() * 0.0002 - 0.0001
             );
             marker.setPosition(newPosition);
           });

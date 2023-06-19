@@ -7,11 +7,11 @@ import '../style/components/LoginForm.css';
 
 const CustomTextField = styled(TextField)({
   '& .MuiInputLabel-root.Mui-focused': {
-    color: '#FF7F50',
+    color: '#D14D72',
   },
   '& .MuiOutlinedInput-root': {
     '&.Mui-focused fieldset': {
-      borderColor: '#FF7F50',
+      borderColor: '#D14D72',
     },
   },
 });
@@ -83,7 +83,7 @@ const LoginForm = ({ onLoginSuccess }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button type="submit" fullWidth variant="contained" sx={{ backgroundColor: '#e9531d', marginTop: '30px', color: 'white', '&:hover': { backgroundColor: '#FF7F50' } }}>
+            <Button type="submit" fullWidth variant="contained" sx={{ backgroundColor: '#D14D72', marginTop: '30px', color: 'white', '&:hover': { backgroundColor: '#BE5A83' } }}>
               LOG IN
             </Button>
           </Box>

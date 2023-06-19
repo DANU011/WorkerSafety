@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import RealtimeChartTemp from '../Charts/RealtimeChartTemp';
-import RealtimeChartHeart from '../Charts/RealtimeChartHeart';
 import api from '../../service/api';
 import '../../style/components/InfoData.css';
 
-const InfoData = ({ data, linedata, workerData, detail }) => {
+const InfoData = ({ workerData, detail }) => {
   const [detailData, setDetailData] = useState([]);
 
   const accessToken = sessionStorage.getItem('accessToken');
@@ -77,9 +75,6 @@ const InfoData = ({ data, linedata, workerData, detail }) => {
         )}
       </div>
       <div className='charts'>
-        {/* <LineChart linedata={linedata} /> */}
-        {/* <RealtimeChartHeart workerData={workerData} detailData={detailData}/> */}
-        <RealtimeChartTemp workerData={workerData} detailData={detailData}/>
         {detailData.list && detailData.list.length > 0 && detailData.list[0].userCode.userCode === workerData.userCode && (
           <p className='detail'>맥박:&nbsp;{detailData.list[0].heartbeat}&nbsp; 체온:&nbsp;{detailData.list[0].temperature}</p>
         )}
