@@ -17,3 +17,17 @@
     flex-direction: row;
     width: 100%;
 }
+
+.fall {
+    color: red;
+    font-weight: bold;
+}
+
+.normal {
+    color: black;
+    font-weight: bold;
+}
+
+.detail {
+    font-size: 1.5em;
+}

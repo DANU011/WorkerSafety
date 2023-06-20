@@ -4,14 +4,14 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #FFF0D6;
+    background-color: #FFD9D4;
 }
 
 .register-title {
     margin: 0 0 40px;
     font-size: 24px;
     font-weight: 700;
-    color: #FF7F50;
+    color: #D14D72;
 }
 
 .register-form {
