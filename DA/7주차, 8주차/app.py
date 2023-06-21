@@ -1,12 +1,12 @@
 from flask import Flask, request, jsonify
-import joblib
+from tensorflow.keras.models import load_model
 import pandas as pd
 import numpy as np
 
 app = Flask(__name__)
 
 # 모델 불러오기
-model = joblib.load('./model/loaded_model_cnn_lstm_g_SGD.h5')
+model = load_model('./model/loaded_model_cnn_lstm_g_SGD.h5')
 
 # 시퀀스 길이 설정
 sequence_length = 20
@@ -35,8 +35,18 @@ def receive_data():
     # 예측 결과 생성
     y_pred = model.predict(X)
 
-    # 예측 결과를 JSON 형식으로 반환
-    response = jsonify({'prediction': y_pred.tolist()})
+    # user_ID, temp, heartbeat의 첫 번째 레코드 추출
+    user_id = df['user_ID'].values[0]
+    temp = df['temp'].values[0]
+    heartbeat = df['heartbeat'].values[0]
+
+    # 예측 결과와 함께 user_ID, temp, heartbeat을 JSON 형식으로 반환
+    response = jsonify({
+        'user_ID': user_id,
+        'temp': temp,
+        'heartbeat': heartbeat,
+        'prediction': y_pred.tolist()
+    })
 
     return response
 
