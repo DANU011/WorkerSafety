@@ -36,13 +36,13 @@ def receive_data():
     y_pred = model.predict(X)
 
     # user_ID, temp, heartbeat의 첫 번째 레코드 추출
-    user_id = df['user_ID'].values[0]
+    user_ID = df['user_ID'].values[0]
     temp = df['temp'].values[0]
     heartbeat = df['heartbeat'].values[0]
 
     # 예측 결과와 함께 user_ID, temp, heartbeat을 JSON 형식으로 반환
     response = jsonify({
-        'user_ID': user_id,
+        'user_ID': user_ID,
         'temp': temp,
         'heartbeat': heartbeat,
         'prediction': y_pred.tolist()
