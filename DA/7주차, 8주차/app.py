@@ -1,12 +1,17 @@
 from flask import Flask, request, jsonify
-from tensorflow.keras.models import load_model
+# from tensorflow.keras.models import load_model
+# import tensorflow as tf
 import pandas as pd
 import numpy as np
 
 app = Flask(__name__)
 
-# 모델 불러오기
-model = load_model('./model/loaded_model_cnn_lstm_g_SGD.h5')
+# # 모델 불러오기
+# model_path = b'./model/loaded_model_cnn_lstm_g_SGD.h5'
+# model = tf.keras.models.load_model(model_path)
+
+
+
 
 # 시퀀스 길이 설정
 sequence_length = 20
@@ -21,31 +26,33 @@ def receive_data():
     # JSON 데이터를 DataFrame으로 변환
     df = pd.DataFrame(data)
 
-    # gx, gy, gz 데이터 추출
-    gx = df['gx'].values
-    gy = df['gy'].values
-    gz = df['gz'].values
-
-    # 시퀀스 생성
-    sequence = create_sequence(gx, gy, gz)
-
-    # 시퀀스를 3차원 배열로 변환 (샘플 수, 시퀀스 길이, 특성 수)
-    X = np.array([sequence])
-
-    # 예측 결과 생성
-    y_pred = model.predict(X)
+    # # gx, gy, gz 데이터 추출
+    # gx = df['gx'].values
+    # gy = df['gy'].values
+    # gz = df['gz'].values
+    #
+    # # 시퀀스 생성
+    # sequence = create_sequence(gx, gy, gz)
+    #
+    # # 시퀀스를 3차원 배열로 변환 (샘플 수, 시퀀스 길이, 특성 수)
+    # X = np.array([sequence])
+    #
+    # # 예측 결과 생성
+    # y_pred = model.predict(X)
 
     # user_ID, temp, heartbeat의 첫 번째 레코드 추출
     user_ID = df['user_ID'].values[0]
     temp = df['temp'].values[0]
     heartbeat = df['heartbeat'].values[0]
+    label = df['label'].values[0]
 
     # 예측 결과와 함께 user_ID, temp, heartbeat을 JSON 형식으로 반환
     response = jsonify({
         'user_ID': user_ID,
         'temp': temp,
         'heartbeat': heartbeat,
-        'prediction': y_pred.tolist()
+        # 'prediction': y_pred.tolist()
+        'prediction': label
     })
 
     return response
