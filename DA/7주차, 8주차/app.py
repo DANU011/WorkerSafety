@@ -48,7 +48,7 @@ def receive_data():
 
     # 예측 결과와 함께 user_ID, temp, heartbeat을 JSON 형식으로 반환
     response = jsonify({
-        'user_ID': userCode,
+        'userCode': userCode,
         'temp': temp,
         'heartbeat': heartbeat,
         # 'prediction': y_pred.tolist()
