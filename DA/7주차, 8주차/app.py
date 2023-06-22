@@ -164,13 +164,13 @@ def receive_data():
     # 추출한 인덱스에 해당하는 레코드를 가져와 리스트에 추가합니다
     for index in indices:
         try:
-            record = {
+            list = {
                 'userCode': float(df.loc[index, 'userCode']['userCode']),
                 'temp': float(df.loc[index, 'temp']),
                 'heartbeat': float(df.loc[index, 'heartbeat']),
                 'prediction': str(df.loc[index, 'label'])
             }
-            records.append(record)
+            records.append(list)
         except KeyError:
             continue
 
