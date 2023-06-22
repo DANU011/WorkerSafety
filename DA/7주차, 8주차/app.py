@@ -151,7 +151,6 @@ def receive_data():
     # 요청으로부터 JSON 데이터를 가져옵니다
     data = request.get_json()
     print(data)
-
     # JSON 데이터를 DataFrame으로 변환합니다
     df = pd.DataFrame(data)
 
@@ -164,21 +163,22 @@ def receive_data():
     # 추출한 인덱스에 해당하는 레코드를 가져와 리스트에 추가합니다
     for index in indices:
         try:
-            list = {
+            record = {
                 'userCode': float(df.loc[index, 'userCode']['userCode']),
                 'temp': float(df.loc[index, 'temp']),
                 'heartbeat': float(df.loc[index, 'heartbeat']),
                 'prediction': str(df.loc[index, 'label'])
             }
-            records.append(list)
+            records.append(record)
         except KeyError:
             continue
 
     # 레코드들을 포함하는 JSON 응답을 생성합니다
-    response = {'records': records}
+    response = {'list': records}
 
     # JSON 응답을 반환합니다
     return jsonify(response)
+
 
 
 
