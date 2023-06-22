@@ -2,7 +2,6 @@ package com.cos.jwt.domain;
 
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,15 +16,14 @@ public class WorkerDetails {
 	@ManyToOne()
 	@JoinColumn(name = "userCode")
 	private Worker  userCode;
-	private String Label;
-	private Integer Heartbeat;
-	private Double Temperature;
-	private Double GyroX;
-	private Double GyroY;
-	private Double GyroZ;
-	private Double Lat;
-	private Double Lng;
-	private LocalTime Time;
+	private Double gx;
+	private Double gy;
+	private Double gz;
+	private String label;
+	private LocalDateTime time;
+	private Integer heartbeat;
+	private Double temp;
+	
 	public Integer getNo() {
 		return no;
 	}
@@ -38,63 +36,48 @@ public class WorkerDetails {
 	public void setUserCode(Worker userCode) {
 		this.userCode = userCode;
 	}
-	public String getLabel() {
-		return Label;
+	public Double getGx() {
+		return gx;
 	}
-	public void setLabel(String label) {
-		Label = label;
+	public void setGx(Double gx) {
+		this.gx = gx;
+	}
+	public Double getGy() {
+		return gy;
+	}
+	public void setGy(Double gy) {
+		this.gy = gy;
+	}
+	public Double getGz() {
+		return gz;
+	}
+	public void setGz(Double gz) {
+		this.gz = gz;
+	}
+	
+	public LocalDateTime getTime() {
+		return time;
+	}
+	public void setTime(LocalDateTime time) {
+		this.time = time;
 	}
 	public Integer getHeartbeat() {
-		return Heartbeat;
+		return heartbeat;
 	}
 	public void setHeartbeat(Integer heartbeat) {
-		Heartbeat = heartbeat;
+		this.heartbeat = heartbeat;
 	}
-	public Double getTemperature() {
-		return Temperature;
+	public Double getTemp() {
+		return temp;
 	}
-	public void setTemperature(Double temperature) {
-		Temperature = temperature;
+	public void setTemp(Double temp) {
+		this.temp = temp;
 	}
-
-	public Double getGyroX() {
-		return GyroX;
+	public String getLabel() {
+		return label;
 	}
-	public void setGyroX(Double gyroX) {
-		GyroX = gyroX;
+	public void setLabel(String label) {
+		this.label = label;
 	}
-	public Double getGyroY() {
-		return GyroY;
-	}
-	public void setGyroY(Double gyroY) {
-		GyroY = gyroY;
-	}
-	public Double getGyroZ() {
-		return GyroZ;
-	}
-	public void setGyroZ(Double gyroZ) {
-		GyroZ = gyroZ;
-	}
-	
-	
-	public Double getLat() {
-		return Lat;
-	}
-	public void setLat(Double lat) {
-		Lat = lat;
-	}
-	public Double getLng() {
-		return Lng;
-	}
-	public void setLng(Double lng) {
-		Lng = lng;
-	}
-	public LocalTime getTime() {
-		return Time;
-	}
-	public void setTime(LocalTime time) {
-		Time = time;
-	}
-	
 	
 }

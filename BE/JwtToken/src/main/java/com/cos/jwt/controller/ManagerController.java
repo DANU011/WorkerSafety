@@ -1,5 +1,6 @@
 package com.cos.jwt.controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +27,6 @@ import com.cos.jwt.domain.Objectchange;
 import com.cos.jwt.domain.Worker;
 import com.cos.jwt.domain.WorkerDetails;
 import com.cos.jwt.service.ManagerService;
-import com.cos.jwt.service.SchedulerService;
 import com.cos.jwt.service.WorkerDetailsService;
 import com.cos.jwt.service.WorkerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,11 +43,7 @@ public class ManagerController   {
 	WorkerService workerService;
 	
 	@Autowired
-	WorkerDetailsService workerdeDetailsService;
-	
-	@Autowired
-	SchedulerService schedulerService;
-	
+	WorkerDetailsService workerdeDetailsService;	
 	
 	@PostMapping("/user/join")
 	public String join(@RequestBody Manager manager) {
@@ -70,14 +64,14 @@ public class ManagerController   {
 	}
 	
 	@DeleteMapping("/worker/delete")
-	public void workerdelete(@RequestParam Double userCode) {
+	public void workerdelete(@RequestParam Integer userCode) {
 		workerService.workerdelete(userCode);
 	}
 	
 	
 	RestTemplate restTemplate = new RestTemplate();
 	int counter = 1;
-	
+	LocalDateTime time = LocalDateTime.of(2023, 6, 15, 1, 0, 0, 0);
 	private volatile boolean scheduled = false;
 	@Scheduled(fixedRate = 2000)
 	@PostMapping("/worker/listdetail")
@@ -88,14 +82,19 @@ public class ManagerController   {
     	HttpHeaders headers = new HttpHeaders();
     	//headers 객체의 Content-Type 헤더 값을 JSON 형식으로 설정
     	headers.setContentType(MediaType.APPLICATION_JSON);
-    	Integer no = counter++;
-    	List<WorkerDetails> list = workerdeDetailsService.WorkerDetailList(no);
+    	Integer no = counter;
+    	counter = counter+20;
+    	
+    	//List<WorkerDetails> list = workerdeDetailsService.WorkerDetailList(no);
+    	//List<WorkerDetails> list = workerdeDetailsService.WorkerDetailList20(no);
+    	List<WorkerDetails> list = workerdeDetailsService.WorkerDetailListTime(time);
+    	time.plusSeconds(2);
     	HttpEntity<List<WorkerDetails>> entity = new HttpEntity<>(list, headers);
     	System.out.println(list);
     	// HTTP POST 요청을 보내고 응답을 받는 메서드(요청보낼 url,요청에 담을 데이터와 헤더를 담은 객체,요청에 담을 데이터와 헤더를 담은 객체)
     	String response = restTemplate.postForObject(url, entity, String.class);
     	System.out.println("response"+response);
-    	
+    	System.out.println(response);
     	//json 형태의 response를 객체로 
     	ObjectMapper objectMapper = new ObjectMapper();
     	Objectchange objectchange = objectMapper.readValue(response, Objectchange.class);
@@ -124,7 +123,7 @@ public class ManagerController   {
 	        scheduled = false;
 	        return ResponseEntity.ok().build();
 	    }
-//	
+	    
 //	@GetMapping("/refresh")
 //    public ResponseEntity<Map<String, String>> refreshAccessToken(@RequestParam("refreshToken") String refreshToken) {
 //        try {

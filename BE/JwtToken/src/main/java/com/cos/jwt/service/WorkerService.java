@@ -25,8 +25,8 @@ public class WorkerService {
 		workerRepo.save(worker);
 	}
 	@Transactional
-	public void workerdelete(Double userCode) {
-		workerRepo.deleteByuserCode(userCode);
+	public void workerdelete(int code) {
+		workerRepo.deleteByuserCode(code);
 		
 	}
 }
