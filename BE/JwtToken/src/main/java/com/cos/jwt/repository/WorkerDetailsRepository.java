@@ -12,4 +12,5 @@ public interface WorkerDetailsRepository extends JpaRepository<WorkerDetails, In
 	public List<WorkerDetails> findByNoBetween(Integer start,Integer end);
 	public List<WorkerDetails> findByTimeBetween(LocalDateTime start,LocalDateTime end);
 	//List<WorkerDetails> findAllByOrderByTime(LocalTime time);
+	List<WorkerDetails> findByTime(LocalDateTime time);
 }
