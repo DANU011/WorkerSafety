@@ -41,10 +41,15 @@ def receive_data():
     # y_pred = model.predict(X)
 
     # user_ID, temp, heartbeat의 첫 번째 레코드 추출
-    userCode = float(df['userCode'].values[0])
-    temp = float(df['temp'].values[0])
-    heartbeat = float(df['heartbeat'].values[0])
-    label = str(df['label'].values[0])
+    userCode = df['userCode'].values[0]
+    temp = df['temp'].values[0]
+    heartbeat = df['heartbeat'].values[0]
+    label = df['label'].values[0]
+
+    df['userCode'] = df['userCode'].astype(float)
+    df['temp'] = df['temp'].astype(float)
+    df['heartbeat'] = df['heartbeat'].astype(float)
+    df['label'] = df['label'].astype(str)
 
     # 예측 결과와 함께 user_ID, temp, heartbeat을 JSON 형식으로 반환
     response = jsonify({
