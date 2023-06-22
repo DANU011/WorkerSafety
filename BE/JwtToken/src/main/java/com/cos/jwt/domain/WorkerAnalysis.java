@@ -1,0 +1,64 @@
+package com.cos.jwt.domain;
+
+import java.time.LocalDateTime;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
+public class WorkerAnalysis {
+	@ManyToOne()
+	@JoinColumn(name = "userCode")
+	private Worker  userCode;
+	private Integer heartbeat;
+	private Double temp;
+	private String prediction;
+	private LocalDateTime time;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer no;
+	
+	public Worker getUserCode() {
+		return userCode;
+	}
+	public void setUserCode(Worker userCode) {
+		this.userCode = userCode;
+	}
+	public Integer getHeartbeat() {
+		return heartbeat;
+	}
+	public void setHeartbeat(Integer heartbeat) {
+		this.heartbeat = heartbeat;
+	}
+	public Double getTemp() {
+		return temp;
+	}
+	public void setTemp(Double temp) {
+		this.temp = temp;
+	}
+	public String getPrediction() {
+		return prediction;
+	}
+	public void setPrediction(String prediction) {
+		this.prediction = prediction;
+	}
+	public LocalDateTime getTime() {
+		return time;
+	}
+	public void setTime(LocalDateTime time) {
+		this.time = time;
+	}
+	public Integer getNo() {
+		return no;
+	}
+	public void setNo(Integer no) {
+		this.no = no;
+	}
+	
+	
+}
