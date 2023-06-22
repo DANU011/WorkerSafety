@@ -111,35 +111,84 @@ from sklearn.preprocessing import LabelEncoder
 # if __name__ == '__main__':
 #     app.run()
 
+#=================================================================================#
+# app = Flask(__name__)
+#
+# @app.route('/predict', methods=['POST'])
+# def receive_data():
+#     # 요청으로부터 JSON 데이터를 가져옵니다
+#     data = request.get_json()
+#
+#     # JSON 데이터를 DataFrame으로 변환합니다
+#     df = pd.DataFrame(data)
+#
+#     # 첫 번째 레코드의 userCode, temp, heartbeat, label 값을 추출합니다
+#     user_code = float(df.loc[0, 'userCode']['userCode'])
+#     temp = float(df.loc[0, 'temp'])
+#     heartbeat = float(df.loc[0, 'heartbeat'])
+#     label = str(df.loc[0, 'label'])
+#
+#     # userCode, temp, heartbeat, label 값을 포함하는 JSON 응답을 생성합니다
+#     response = {
+#         'userCode': user_code,
+#         'temp': temp,
+#         'heartbeat': heartbeat,
+#         'prediction': label
+#     }
+#
+#     # JSON 응답을 반환합니다
+#     return jsonify(response)
+#
+# if __name__ == '__main__':
+#     app.run()
+
+#===================================================================================#
+
 app = Flask(__name__)
 
 @app.route('/predict', methods=['POST'])
 def receive_data():
     # 요청으로부터 JSON 데이터를 가져옵니다
     data = request.get_json()
+    print(data)
 
     # JSON 데이터를 DataFrame으로 변환합니다
     df = pd.DataFrame(data)
 
-    # 첫 번째 레코드의 userCode, temp, heartbeat, label 값을 추출합니다
-    user_code = float(df.loc[0, 'userCode']['userCode'])
-    temp = float(df.loc[0, 'temp'])
-    heartbeat = float(df.loc[0, 'heartbeat'])
-    label = str(df.loc[0, 'label'])
+    # 레코드 인덱스를 추출합니다
+    indices = [0, 20, 40, 60, 80, 100, 120, 140]
 
-    # userCode, temp, heartbeat, label 값을 포함하는 JSON 응답을 생성합니다
-    response = {
-        'userCode': user_code,
-        'temp': temp,
-        'heartbeat': heartbeat,
-        'label': label
-    }
+    # 레코드들을 담을 리스트를 초기화합니다
+    records = []
+
+    # 추출한 인덱스에 해당하는 레코드를 가져와 리스트에 추가합니다
+    for index in indices:
+        try:
+            record = {
+                'userCode': float(df.loc[index, 'userCode']['userCode']),
+                'temp': float(df.loc[index, 'temp']),
+                'heartbeat': float(df.loc[index, 'heartbeat']),
+                'prediction': str(df.loc[index, 'label'])
+            }
+            records.append(record)
+        except KeyError:
+            continue
+
+    # 레코드들을 포함하는 JSON 응답을 생성합니다
+    response = {'records': records}
 
     # JSON 응답을 반환합니다
     return jsonify(response)
 
+
+
 if __name__ == '__main__':
     app.run()
+
+
+
+
+
 
 
 

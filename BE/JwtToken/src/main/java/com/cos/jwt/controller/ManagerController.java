@@ -98,16 +98,9 @@ public class ManagerController   {
     	System.out.println("response"+response);
     	System.out.println(response);
     	//json 형태의 response를 객체로 
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	Objectchange objectchange = objectMapper.readValue(response, Objectchange.class);
-    	System.out.println("objectchange"+objectchange);
     	
-    	// 응답 및 리스트 데이터를 Map에 담기
-    	Map<String, Object> data = new HashMap<>();
-    	data.put("list", list);
-    	data.put("response", objectchange);
     	// ResponseEntity를 반환하여 응답 데이터 전달
-    	return ResponseEntity.ok(data);
+    	return ResponseEntity.ok(response);
 		}
 		return null;
 			
