@@ -71,8 +71,7 @@ public class ManagerController   {
 	
 	
 	RestTemplate restTemplate = new RestTemplate();
-	//int counter = 1;
-	LocalDateTime time = LocalDateTime.of(2023, 6, 15, 1, 0, 0, 0);
+	LocalDateTime time = LocalDateTime.of(2023, 6, 15, 1, 0, 2, 0);
 	private volatile boolean scheduled = false;
 	@Scheduled(fixedRate = 2000)
 	@PostMapping("/worker/listdetail")
@@ -83,16 +82,15 @@ public class ManagerController   {
     	HttpHeaders headers = new HttpHeaders();
     	//headers 객체의 Content-Type 헤더 값을 JSON 형식으로 설정
     	headers.setContentType(MediaType.APPLICATION_JSON);
-    	//Integer no = counter;
-    	//counter = counter+20;
     	
-    	//List<WorkerDetails> list = workerdeDetailsService.WorkerDetailList(no);
-    	//List<WorkerDetails> list = workerdeDetailsService.WorkerDetailList20(no);
     	List<WorkerDetails> list = workerdeDetailsService.WorkerDetailListTime(time);
-    	
+
+
         LocalDateTime updatedTime = time.plusSeconds(2);
         time = updatedTime;
-        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String formattedTime = time.format(formatter);
+        System.out.println(formattedTime);
     	HttpEntity<List<WorkerDetails>> entity = new HttpEntity<>(list, headers);
     	System.out.println(list);
     	// HTTP POST 요청을 보내고 응답을 받는 메서드(요청보낼 url,요청에 담을 데이터와 헤더를 담은 객체,요청에 담을 데이터와 헤더를 담은 객체)
