@@ -46,6 +46,11 @@ public class Worker {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	@Override
+	public String toString() {
+		return "Worker [userCode=" + userCode + ", name=" + name + ", gender=" + gender + ", age=" + age + ", role="
+				+ role + "]";
+	}
 	
 	
 }
