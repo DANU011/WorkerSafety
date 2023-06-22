@@ -69,7 +69,7 @@ from flask import Flask, jsonify, request
 import numpy as np
 import pandas as pd
 import pickle
-from tensorflow.keras.models import load_model
+# from tensorflow.keras.models import load_model
 from sklearn.preprocessing import LabelEncoder
 #
 # # 훈련된 모델과 라벨 인코더를 로드합니다

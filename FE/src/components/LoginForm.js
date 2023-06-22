@@ -34,8 +34,8 @@ const LoginForm = ({ onLoginSuccess }) => {
         const accessToken = response.headers['authorization'].split(' ')[1];
         sessionStorage.setItem('accessToken', accessToken);
         // console.log(accessToken);
-        const refreshToken = response.headers['refreshtoken']; 
-        sessionStorage.setItem('refreshToken', refreshToken);
+        // const refreshToken = response.headers['refreshtoken']; 
+        // sessionStorage.setItem('refreshToken', refreshToken);
         // console.log(refreshToken);
         const decodedToken = jwt_decode(accessToken);
         const managerid = decodedToken.managerid;

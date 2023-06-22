@@ -37,6 +37,7 @@ const InfoData = ({ workerData, detail }) => {
           },
         });
         const detailData = response.data;
+        // console.log(detailData);
         setDetailData(detailData);
       } catch (error) {
         console.error(error);
@@ -70,7 +71,7 @@ const InfoData = ({ workerData, detail }) => {
     <div className="infoData">
       <div className='data'>
         <p>작업자코드:&nbsp;{workerData.userCode}&nbsp; 이름:&nbsp;{workerData.name}&nbsp; 성별:&nbsp;{workerData.gender}&nbsp; 나이:&nbsp;{workerData.age}&nbsp; 직위:&nbsp;{workerData.role}&nbsp;</p>
-        {detailData.list && detailData.list.length > 0 && detailData.list[0].userCode.userCode === workerData.userCode && (
+        {detailData.list && detailData.list.length > 0 && detailData.list.userCode.userCode === workerData.userCode && (
           <p className={detailData.response.prediction[0] === 'fall' ? 'fall' : 'normal'}>{detailData.response.prediction[0]}</p>
         )}
       </div>
