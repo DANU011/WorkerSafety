@@ -151,7 +151,6 @@ def receive_data():
     # 요청으로부터 JSON 데이터를 가져옵니다
     data = request.get_json()
     print(data)
-
     # JSON 데이터를 DataFrame으로 변환합니다
     df = pd.DataFrame(data)
 
@@ -175,10 +174,11 @@ def receive_data():
             continue
 
     # 레코드들을 포함하는 JSON 응답을 생성합니다
-    response = {'records': records}
+    response = {'list': records}
 
     # JSON 응답을 반환합니다
     return jsonify(response)
+
 
 
 
