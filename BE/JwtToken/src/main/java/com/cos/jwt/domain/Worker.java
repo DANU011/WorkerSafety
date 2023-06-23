@@ -8,17 +8,18 @@ import javax.persistence.Id;
 public class Worker {
 	@Id
 	@Column(name = "userCode")
-	private Double userCode;
+	private Integer userCode;
 	private String name;
 	private String gender;
 	private Integer age;
 	private String role;
 	
+	
 
-	public Double getUserCode() {
+	public Integer getUserCode() {
 		return userCode;
 	}
-	public void setUserCode(Double userCode) {
+	public void setUserCode(Integer userCode) {
 		this.userCode = userCode;
 	}
 	

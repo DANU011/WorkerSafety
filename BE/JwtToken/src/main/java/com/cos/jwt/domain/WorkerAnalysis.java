@@ -11,6 +11,9 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class WorkerAnalysis {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer no;
 	@ManyToOne()
 	@JoinColumn(name = "userCode")
 	private Worker  userCode;
@@ -19,9 +22,6 @@ public class WorkerAnalysis {
 	private String prediction;
 	private LocalDateTime time;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer no;
 	
 	public Worker getUserCode() {
 		return userCode;
@@ -58,6 +58,12 @@ public class WorkerAnalysis {
 	}
 	public void setNo(Integer no) {
 		this.no = no;
+	}
+	
+	@Override
+	public String toString() {
+		return "WorkerAnalysis [userCode=" + userCode + ", heartbeat=" + heartbeat + ", temp=" + temp + ", prediction="
+				+ prediction + ", time=" + time + ", no=" + no + "]";
 	}
 	
 	
