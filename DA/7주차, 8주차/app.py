@@ -69,7 +69,7 @@ def receive_data():
                 'userCode': float(df.loc[index, 'userCode']['userCode']),
                 'temp': float(df.loc[index, 'temp']),
                 'heartbeat': float(df.loc[index, 'heartbeat']),
-                'prediction': y_pred_labels[(index//20)-1]
+                'prediction': y_pred_labels[(index % 20)-1]
             }
             records.append(record)
         except KeyError:
