@@ -182,7 +182,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const TableUI = ({onValueChange}) => {
+const TableUI = ({onValueChange, detailData}) => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('useCode');
   const [selected, setSelected] = useState([]);
@@ -198,44 +198,34 @@ const TableUI = ({onValueChange}) => {
   const accessToken = sessionStorage.getItem('accessToken');
   // console.log(accessToken);
 
+  console.log(detailData);
+
   useEffect(() => {
-    api.get('/worker/list', 
-          {
-              headers: {
-              Authorization: `Bearer ${accessToken}`
-              }
-          }
-        )
-        .then((response) => {
-          const listdata = response.data;
-          // console.log(listdata);
-
-          const state = {
-            1: '정상',
-            2: '비정상',
-            3: '정상',
-            4: '정상',
-            5: '정상',
-            6: '정상',
-            7: '비정상',
-            8: '정상',
+    api.get('/worker/list', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((response) => {
+        const listdata = response.data;
+        const allrows = listdata.map((row) => {
+          const prediction = detailData.list && detailData.list.find((item) => item.userCode === row.userCode)?.prediction;
+          return {
+            ...row,
+            state: prediction,
           };
-
-          const allrows = listdata.map((row)=>({
-            ...row, state: state[row.userCode]
-          }));
-          // console.log(allrows);
-          setRows(allrows);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error(error);
-          if (error.response.status === 403) {
-            window.location.href = '/';
-        } else {
-            console.error(error);
-        }
         });
+        setRows(allrows);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        if (error.response.status === 403) {
+          window.location.href = '/';
+        } else {
+          console.error(error);
+        }
+      });
   }, [accessToken]);
 
   const handleRequestSort = (event, property) => {
@@ -436,7 +426,7 @@ const TableUI = ({onValueChange}) => {
                         {row.userCode}
                         </TableCell>
                         <TableCell align="center" sx={{ width: '30%' }}>{row.name}</TableCell>
-                        <TableCell align="center" sx={{ width: '30%' }} style={{ color: row.state === '비정상' ? 'red' : 'black', fontWeight: row.state === '비정상' ? 'bold' : 'normal' }}>{row.state}</TableCell>
+                        <TableCell align="center" sx={{ width: '30%' }} style={{ color: row.state === 'fall' ? 'red' : 'black', fontWeight: row.state === 'fall' ? 'bold' : 'normal' }}>{row.state}</TableCell>
                     </TableRow>
                     );
                 })}

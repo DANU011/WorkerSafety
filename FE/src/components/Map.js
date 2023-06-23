@@ -5,7 +5,7 @@ import '../style/components/Map.css';
 
 const Map = ({ value }) => {
   const [map, setMap] = useState(null);
-  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(7);
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(0);
   const [markers, setMarkers] = useState([]);
   const [isInfoDataVisible, setIsInfoDataVisible] = useState(true);
   const [selectedComponent, setSelectedComponent] = useState(null);
@@ -52,7 +52,7 @@ const Map = ({ value }) => {
     setDetailData(value);
   };
 
-  // console.log(detailData);
+  console.log(detailData);
 
   useEffect(() => {
     if (workerData.length > 0) {

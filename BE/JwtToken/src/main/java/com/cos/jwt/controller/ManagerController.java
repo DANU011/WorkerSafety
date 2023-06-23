@@ -85,7 +85,6 @@ public class ManagerController   {
     	
     	List<WorkerDetails> list = workerdeDetailsService.WorkerDetailListTime(time);
     	System.out.println(list);
-    	
         LocalDateTime updatedTime = time.plusSeconds(2);
         time = updatedTime;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
