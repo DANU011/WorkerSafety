@@ -82,7 +82,5 @@ def receive_data():
     return jsonify(response)
 
 
-
-
 if __name__ == '__main__':
     app.run()
