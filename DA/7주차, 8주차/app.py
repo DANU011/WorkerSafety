@@ -15,10 +15,10 @@ model = load_model('./model/loaded_model_cnn_lstm_g_SGD.h5')
 
 @app.route('/predict', methods=['POST'])
 def receive_data():
-    # 요청으로부터 JSON 데이터를 가져옵니다
+    # 요청으로부터 JSON 데이터 로드
     data = request.get_json()
     print('date :', data)
-    # JSON 데이터를 DataFrame으로 변환합니다
+    # JSON 데이터를 DataFrame으로 변환
     df = pd.DataFrame(data)
     print()
     print('df :', df)
@@ -56,32 +56,30 @@ def receive_data():
     print(y_pred_labels)
 
 
-    # 레코드 인덱스를 추출합니다
+    # 레코드 인덱스를 추출
     indices = [1, 21, 41, 61, 81, 101, 121, 141]
 
-    # 레코드들을 담을 리스트를 초기화합니다
+    # 레코드를 담을 리스트 초기화
     records = []
 
-    # 추출한 인덱스에 해당하는 레코드를 가져와 리스트에 추가합니다
+    # 추출한 인덱스에 해당하는 레코드를 가져와 리스트에 추가
     for index in indices:
         try:
             record = {
                 'userCode': float(df.loc[index, 'userCode']['userCode']),
                 'temp': float(df.loc[index, 'temp']),
                 'heartbeat': float(df.loc[index, 'heartbeat']),
-                'prediction': y_pred_labels[(index//20)-1]
+                'prediction': y_pred_labels[(index % 20)-1]
             }
             records.append(record)
         except KeyError:
             continue
 
-    # 레코드들을 포함하는 JSON 응답을 생성합니다
+    # 레코드를 포함하는 JSON 응답을 생성
     response = {'list': records}
 
-    # JSON 응답을 반환합니다
+    # JSON 응답을 반환
     return jsonify(response)
-
-
 
 
 if __name__ == '__main__':
