@@ -209,10 +209,13 @@ const TableUI = ({onValueChange, detailData}) => {
       .then((response) => {
         const listdata = response.data;
         const allrows = listdata.map((row) => {
-          const prediction = detailData.list && detailData.list.find((item) => item.userCode === row.userCode)?.prediction;
+          const prediction =
+            detailData.list &&
+            detailData.list.find((item) => item.userCode === row.userCode)
+              ?.prediction;
           return {
             ...row,
-            state: prediction,
+            state: prediction || "",
           };
         });
         setRows(allrows);
@@ -221,12 +224,12 @@ const TableUI = ({onValueChange, detailData}) => {
       .catch((error) => {
         console.error(error);
         if (error.response.status === 403) {
-          window.location.href = '/';
+          window.location.href = "/";
         } else {
           console.error(error);
         }
       });
-  }, [accessToken]);
+  }, [accessToken, detailData.list]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
