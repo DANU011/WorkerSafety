@@ -25,6 +25,7 @@ import com.cos.jwt.domain.Manager;
 import com.cos.jwt.domain.Worker;
 import com.cos.jwt.domain.WorkerDetails;
 import com.cos.jwt.service.ManagerService;
+import com.cos.jwt.service.WorkerAnalysisSerivice;
 import com.cos.jwt.service.WorkerDetailsService;
 import com.cos.jwt.service.WorkerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -41,6 +42,9 @@ public class ManagerController   {
 	
 	@Autowired
 	WorkerDetailsService workerdeDetailsService;	
+	
+	@Autowired 
+	WorkerAnalysisSerivice workerAnalysisSerivice;
 	
 	@PostMapping("/user/join")
 	public String join(@RequestBody Manager manager) {
@@ -80,48 +84,38 @@ public class ManagerController   {
     	headers.setContentType(MediaType.APPLICATION_JSON);
     	
     	List<WorkerDetails> list = workerdeDetailsService.WorkerDetailListTime(time);
-
     	System.out.println(list);
+    	
         LocalDateTime updatedTime = time.plusSeconds(2);
         time = updatedTime;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String formattedTime = time.format(formatter);
         System.out.println(formattedTime);
+        
     	HttpEntity<List<WorkerDetails>> entity = new HttpEntity<>(list, headers);
-    	System.out.println(list);
     	// HTTP POST 요청을 보내고 응답을 받는 메서드(요청보낼 url,요청에 담을 데이터와 헤더를 담은 객체,요청에 담을 데이터와 헤더를 담은 객체)
     	String response = restTemplate.postForObject(url, entity, String.class);
-    	System.out.println("response"+response);
     	System.out.println(response);
-    	//json 형태의 response를 객체로 
-    	//ObjectMapper objectMapper = new ObjectMapper();
-    	//Objectchange objectchange = objectMapper.readValue(response, Objectchange.class);
-    	//System.out.println("objectchange"+objectchange);
-    	
-    	// 응답 및 리스트 데이터를 Map에 담기
-    	//Map<String, Object> data = new HashMap<>();
-    	//data.put("list", list);
-    	//data.put("response", objectchange);
-    	// ResponseEntity를 반환하여 응답 데이터 전달
+    	//플라스크에서 온 분석한 데이터 데이터베이스에 저장 
+    	workerAnalysisSerivice.saveWorkerAnalysisData(response, updatedTime);
     	return ResponseEntity.ok(response);
 		}
 		return null;
 			
     }
-	
 
-	    @PostMapping("/worker/start")
-	    public ResponseEntity<?> startScheduledTask() {
-	        scheduled = true;
-	        return ResponseEntity.ok("ok");
-	    }
+    @PostMapping("/worker/start")
+    public ResponseEntity<?> startScheduledTask() {
+        scheduled = true;
+        return ResponseEntity.ok("ok");
+    }
 
-	    @PostMapping("/worker/stop")
-	    public ResponseEntity<?> stopScheduledTask() {
-	        scheduled = false;
-	        return ResponseEntity.ok().build();
-	    }
-	
+    @PostMapping("/worker/stop")
+    public ResponseEntity<?> stopScheduledTask() {
+        scheduled = false;
+        return ResponseEntity.ok().build();
+    }
+
 	
 	@PutMapping("/login/logout")
 	public void logout(SessionStatus status) {
