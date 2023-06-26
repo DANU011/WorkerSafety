@@ -194,6 +194,7 @@ const TableUI = ({onValueChange, detailData}) => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [insertValue, setInsertValue] = useState('');
+  const [showAlert, setShowAlert] = useState(true);
 
   const accessToken = sessionStorage.getItem('accessToken');
   // console.log(accessToken);
@@ -375,8 +376,20 @@ const TableUI = ({onValueChange, detailData}) => {
     }
   }, [loading, visibleRows]);
 
+  useEffect(() => {
+    const rowsWithRedText = rows.filter(row => row.state === 'fall');
+    if (rowsWithRedText.length > 0 && showAlert) {
+      alert("위험 작업자가 있습니다!");
+      setShowAlert(false);
+      
+      setTimeout(() => {
+        setShowAlert(true);
+      }, 30000);
+    }
+  }, [rows, showAlert]);
+
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%' }} id="table-container">
         <Paper sx={{ width: '100%', mb: 2 }}>
             <EnhancedTableToolbar numSelected={selected.length} handleDelete={handleDelete} handleInsert={handleInsert} />
             <TableContainer component={Box} sx={{backgroundColor : '#FFD9D4'}}>
@@ -429,7 +442,7 @@ const TableUI = ({onValueChange, detailData}) => {
                         {row.userCode}
                         </TableCell>
                         <TableCell align="center" sx={{ width: '30%' }}>{row.name}</TableCell>
-                        <TableCell align="center" sx={{ width: '30%' }} style={{ color: row.state === 'fall' ? 'red' : 'black', fontWeight: row.state === 'fall' ? 'bold' : 'normal' }}>{row.state}</TableCell>
+                        <TableCell align="center" sx={{ width: '30%', color: row.state === 'fall' ? 'red' : 'black', fontWeight: row.state === 'fall' ? 'bold' : 'normal', fontSize: row.state === 'fall' ? '1.2em' : 'normal' }}>{row.state}</TableCell>
                     </TableRow>
                     );
                 })}

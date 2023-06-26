@@ -126,17 +126,17 @@ const Map = ({ value }) => {
     }
   }, [workerData]);
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (markers.some((marker) => marker.getIcon().content.includes('red'))) {
-        alert('위험 작업자가 있습니다!');
-      }
-    }, 5000);
+  // useEffect(() => {
+  //   const timeoutId = setTimeout(() => {
+  //     if (markers.some((marker) => marker.getIcon().content.includes('red'))) {
+  //       alert('위험 작업자가 있습니다!');
+  //     }
+  //   }, 5000);
 
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [markers]);
+  //   return () => {
+  //     clearTimeout(timeoutId);
+  //   };
+  // }, [markers]);
 
   const handleCloseInfoData = () => {
     setIsInfoDataVisible(false);
