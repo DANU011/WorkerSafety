@@ -57,8 +57,8 @@ const Map = ({ value }) => {
   useEffect(() => {
     if (workerData.length > 0) {
       const locations = workerData.map((item, index) => ({
-        lat: 35.23589 + index * 0.00005,
-        lng: 129.07694 + index * 0.00005,
+        lat: 35.23589 + index * 0.0001,
+        lng: 129.07694 + index * 0.0003,
         component: (
           <InfoData
             data={data[index]}
@@ -90,12 +90,19 @@ const Map = ({ value }) => {
         setIsInfoDataVisible(true);
 
         const markers = locations.map((location, index) => {
-          const markerColor = location.component.props.data.text === '비정상' ? 'red' : 'black';
+          // const markerColor = location.component.props.data.text === '비정상' ? 'red' : 'black';
           const marker = new naver.maps.Marker({
             position: new naver.maps.LatLng(location.lat, location.lng),
             map: mapInstance,
             icon: {
-              content: `<div class='marker' style='color: ${markerColor};'><div class='marker-number'>${value[index]}</div></div>`,
+              content: `<div class='marker' style='color: ${
+                detailData &&
+                detailData.list &&
+                detailData.list.length > 0 &&
+                detailData.list.find(item => item.userCode === value[index] && item.prediction === 'fall')
+                  ? 'red'
+                  : 'black'
+              };'><div class='marker-number'>${value[index]}</div></div>`,
               size: new naver.maps.Size(30, 40),
               anchor: new naver.maps.Point(15, 40),
             },
@@ -114,8 +121,8 @@ const Map = ({ value }) => {
           markers.forEach((marker, index) => {
             const position = marker.getPosition();
             const newPosition = new naver.maps.LatLng(
-              position.lat() + Math.random() * 0.0002 - 0.0001,
-              position.lng() + Math.random() * 0.0002 - 0.0001
+              position.lat(),
+              position.lng()
             );
             marker.setPosition(newPosition);
           });
@@ -124,19 +131,7 @@ const Map = ({ value }) => {
 
       document.head.appendChild(script);
     }
-  }, [workerData]);
-
-  // useEffect(() => {
-  //   const timeoutId = setTimeout(() => {
-  //     if (markers.some((marker) => marker.getIcon().content.includes('red'))) {
-  //       alert('위험 작업자가 있습니다!');
-  //     }
-  //   }, 5000);
-
-  //   return () => {
-  //     clearTimeout(timeoutId);
-  //   };
-  // }, [markers]);
+  }, [workerData, detailData, value]);
 
   const handleCloseInfoData = () => {
     setIsInfoDataVisible(false);
