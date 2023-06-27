@@ -1,0 +1,12 @@
+fall
+Temperature high 30% * Heartbeat normal 60%, Heartbeat high 30%, Heartbeat low 10%
+Temperature normal 60% * Heartbeat normal 70%, Heartbeat higt 30%
+Temperature low 10% * Heartbeat normal 70%, Heartbeat low 30% 
+Temperature range
+ high 37.1 ~ 39.9
+ normal 36.0 ~ 37.0
+ low 34.0 ~ 35.0
+Heartbeat
+ high 100 ~ 140
+ normal 60 ~ 85
+ low 45 ~ 55
