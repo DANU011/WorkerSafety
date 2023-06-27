@@ -1,0 +1,42 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="ko">-->
+
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Predict Templates Example</title>-->
+
+<!--    <link rel="stylesheet" href="../static/style.css">-->
+<!--</head>-->
+
+<!--<body>-->
+<!--&lt;!&ndash;    <h1>Hello World!</h1>&ndash;&gt;-->
+<!--    <form action="/predict" method="post">-->
+<!--        <label for="users">Select a user:</label>-->
+<!--        <select name="users" id="users">-->
+<!--            <option value="user1">User 1</option>-->
+<!--            <option value="user2">User 2</option>-->
+<!--            <option value="user3">User 3</option>-->
+<!--        </select>-->
+<!--        <input type="submit" value="Get prediction">-->
+<!--    </form>-->
+<!--</body>-->
+
+<!--</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+        <h1> Classification PREDICTION</h1>
+
+        <form method="POST", action="/predict">
+           <b> Machinery :  <input type="text", name='a', placeholder="Machinery"> <br><br>
+            Assembly :  <input type="text", name='b', placeholder="Assembly"> <br><br>
+            Part No.1 :  <input type="text", name='c', placeholder="Part No.1"> <br><br>
+            청구품목 : <input type="text", name='d', placeholder="청구품목"> <br><br><br></b>
+            <input type="submit" , value='predict' >
+        </form>
+</body>
+</html>
+
