@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import api from '../../service/api';
 import '../../style/components/InfoData.css';
+import Chart from 'react-apexcharts';
 
 const InfoData = ({ workerData, detail }) => {
   const [detailData, setDetailData] = useState([]);
+  const [heartbeatData, setHeartbeatData] = useState([]);
+  const [tempData, setTempData] = useState([]);
   
   const accessToken = sessionStorage.getItem('accessToken');
 
@@ -39,6 +42,10 @@ const InfoData = ({ workerData, detail }) => {
         const detailData = response.data;
         // console.log(detailData);
         setDetailData(detailData);
+        const heartbeatValues = detailData.list.map((item) => item.heartbeat);
+        setHeartbeatData(heartbeatValues);
+        const tempValues = detailData.list.map((item) => item.temp);
+        setTempData(tempValues);
       } catch (error) {
         console.error(error);
         if (error.response && error.response.status === 403) {
@@ -67,6 +74,62 @@ const InfoData = ({ workerData, detail }) => {
     mapData();
   }, [detailData])
 
+  const optionsH = {
+    chart: {
+      id: 'heartbeat-chart',
+    },
+    xaxis: {
+      categories: [2, 7, 8, 4, 1, 3, 5, 6],
+      title: {
+        text: '작업자코드',
+      },
+    },
+    yaxis: {
+      title: {
+        text: 'Heartbeat',
+      },
+      min: 0,
+    },
+    stroke: {
+      curve: 'straight',
+    },
+  };
+
+  const optionsT = {
+    chart: {
+      id: 'temp-chart',
+    },
+    xaxis: {
+      categories: [2, 7, 8, 4, 1, 3, 5, 6],
+      title: {
+        text: '작업자코드',
+      },
+    },
+    yaxis: {
+      title: {
+        text: 'Temp',
+      },
+      min: 0,
+    },
+    stroke: {
+      curve: 'straight',
+    },
+  };
+
+  const seriesH = [
+    {
+      name: 'Heartbeat',
+      data: heartbeatData,
+    },
+  ];
+
+  const seriesT = [
+    {
+      name: 'Temp',
+      data: tempData,
+    },
+  ];
+
   return (
     <div className="infoData">
       <div className='data'>
@@ -85,6 +148,24 @@ const InfoData = ({ workerData, detail }) => {
             <p key={index} className={`detail ${item.heartbeat >= 140 || item.heartbeat <= 50 || item.temp >= 37 || item.temp <= 35 ? 'abnormal' : ''}`}>맥박:&nbsp;{item.heartbeat}&nbsp; 체온:&nbsp;{item.temp}</p>
           )
         ))}
+        {heartbeatData.length > 0 && (
+          <div className="chart">
+            <Chart
+              options={optionsH}
+              series={seriesH}
+              type="line"
+              width="330"
+              height="250"
+            />
+            <Chart
+              options={optionsT}
+              series={seriesT}
+              type="line"
+              width="330"
+              height="250"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
