@@ -8,7 +8,6 @@ import javax.persistence.Id;
 @Entity
 public class Manager {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String managerid;
 	private String password;
 	private String name;
